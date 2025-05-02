@@ -6,7 +6,7 @@ from collections.abc import Callable
 
 from Autodesk.Revit.DB import *
 from Autodesk.Revit.DB import ElementId, Element, ViewPlan, FamilyInstance, BuiltInCategory, FilteredElementCollector, \
-                              MEPSystem, Group, GroupType
+                              MEPSystem, Transform, CopyPasteOptions, ElementTransformUtils
 from Autodesk.Revit.DB.Electrical import ElectricalEquipment, ElectricalSystem
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
@@ -150,15 +150,24 @@ def start():
     ]
 
     base_view = get_element(3831030)
+    target_view = get_element(5693251)
 
-    x = FilteredElementCollector(doc, base_view.Id).WhereElementIsNotElementType().ToElements()
- 
+    elements_collected = FilteredElementCollector(doc, base_view.Id).WhereElementIsNotElementType().ToElements()
+    elements_filtered = []
 
-    for e in x:
+    for e in elements_collected:
         category = e.Category
         if not category or (category and category.Id.IntegerValue not in include_categories): continue
-        print(e, e.Name, ":  ")
- 
+        elements_filtered.append(e)
+        print(e)
+    # copied_ids = ElementTransformUtils.CopyElements(
+    #             base_view, 
+    #             List[ElementId](e.Id for e in elements_filtered), 
+    #             target_view, 
+    #             Transform.Identity,
+    #             CopyPasteOptions()
+    #         )
+    # print(copied_ids)
 if activate:
     start() 
   
