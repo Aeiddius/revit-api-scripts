@@ -1,7 +1,7 @@
 # Revit API Custom Scripts
 
-The following is my scripts written in python which connects to the Revit API. They are made at my current as a BIM Modeller where I needed scripts to automate some tasks for the current high-rise building project which deals with a lot of typical units and redundant views.
+The following Python scripts connect to the Revit API. I developed them in my current role as a BIM Modeller to automate tasks for a high-rise building project that involves many typical units and redundant views.
 
-Due to the nature of my work, I simply used a dynamo script to load my python scripts. The image below displays it where I used a script bundler custom node in order to reuse shared python codes across my different python scripts.
+Because of the repetitive nature of my work, I used a Dynamo script to load these Python scripts. The image below shows how I used a “script bundler” custom node to share common code across all of my Python scripts.
 
 ![ Alt Text](./others/dynamo.png)
