@@ -1,0 +1,141 @@
+{
+  "Uuid": "44e36eef-a7f3-45d6-abe6-023422262262",
+  "IsCustomNode": true,
+  "Category": "Revit.Ian",
+  "Description": "Simplifies three nodes into one node",
+  "Name": "ReadPythonFile",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [
+    {
+      "Id": "62f1891df9284e58afd23fd5b648b9ed",
+      "Name": "Python Script",
+      "Type": "unknown",
+      "InitialValue": "",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\n\r\nimport Autodesk\r\nimport RevitServices\r\nfrom Autodesk.Revit.DB import *\r\n\r\nclr.AddReference('System')\r\n\r\nclr.AddReference(\"RevitAPI\")\r\nclr.AddReference(\"RevitServices\")\r\n\r\nfile_path = IN[0]\r\nif file_path[0] == '\"':\r\n    file_path = file_path[1:]\r\nif file_path[-1] == '\"':\r\n    file_path = file_path[0:-1]\r\n\r\ncontents = \"\"\r\nwith open(file_path, 'r') as file:\r\n    contents = file.read()\r\n      \r\nOUT = contents\r\n\r\n         ",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "62f1891df9284e58afd23fd5b648b9ed",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "0e621e1c116742d0a6e757d371c84773",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "78da2a25395c41b7ba427566c158b38c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "Parameter": {
+        "Name": "path",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": "\"\"",
+        "Description": ""
+      },
+      "Id": "eea457c976234d56b7746c88d4f17dbf",
+      "NodeType": "InputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d83d6f84de06467e85768edbe4be9fe4",
+          "Name": "",
+          "Description": "Input Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "d83d6f84de06467e85768edbe4be9fe4",
+      "End": "0e621e1c116742d0a6e757d371c84773",
+      "Id": "044f3ee91e0641eabe412a9c0d594494",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.0.3.7597",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "62f1891df9284e58afd23fd5b648b9ed",
+        "Name": "Python Script",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 970.8737192267979,
+        "Y": 441.56044395231004
+      },
+      {
+        "Id": "eea457c976234d56b7746c88d4f17dbf",
+        "Name": "Path",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 581.6385083767132,
+        "Y": 375.32446641723465
+      }
+    ],
+    "Annotations": [],
+    "X": -331.02504098428824,
+    "Y": -193.14611889173557,
+    "Zoom": 1.346137304744563
+  }
+}
