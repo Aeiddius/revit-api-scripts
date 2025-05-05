@@ -7,7 +7,7 @@ from collections.abc import Callable
 from Autodesk.Revit.DB import *
 from Autodesk.Revit.DB import ElementId, Element, ViewPlan, FamilyInstance, BuiltInCategory, FilteredElementCollector, \
                               MEPSystem, Transform, CopyPasteOptions, ElementTransformUtils, Group
-from Autodesk.Revit.DB.Electrical import ElectricalEquipment, ElectricalSystem
+from Autodesk.Revit.DB.Electrical import ElectricalEquipment, PanelScheduleView
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
 
@@ -64,79 +64,9 @@ view_template_id = 7574536
 view_family_type_id = 7007076 # device parking
 
 
-def filter_source_elements(base_view):
-    exception_categories = [
-        int(BuiltInCategory.OST_RvtLinks),
-        int(BuiltInCategory.OST_Grids),
-        int(BuiltInCategory.OST_SectionBox),
-        int(BuiltInCategory.OST_Cameras),
-        int(BuiltInCategory.OST_Elev),
-        int(BuiltInCategory.OST_Viewers),
-        # int(BuiltInCategory.OST_IOSModelGroups)
-        ]
-
-    elements_source = FilteredElementCollector(doc, base_view.Id).WhereElementIsNotElementType().ToElements()
-    filtered_elements = []
-    added_ids = []
-    
-    # Filter Elements
-    group_count = 0
-    for e in elements_source:
-        # skip weird shit that does not have a category.
-        category = e.Category
-        if not category: continue
-
-        # skip banned categories
-        if not category or (category and category.Id.IntegerValue in exception_categories):
-            continue
-
-        # Add model groups containing 3d models
-        if category.Id.IntegerValue == int(BuiltInCategory.OST_IOSModelGroups):
-            # print(f"Group {group_count}: ", e.Name)
-            # Gets the instances inside the model group
-            ids = e.GetMemberIds()
-            for id in ids:
-                grp_elem = get_element(id)
-                filtered_elements.append(grp_elem)
-                added_ids.append(grp_elem.Id)
-
-                # Get Electrical System
-                if isinstance(grp_elem, FamilyInstance) and grp_elem.MEPModel:
-                    elec_system = grp_elem.MEPModel.GetElectricalSystems().GetEnumerator()
-                    for j in elec_system:
-                        if j.Id not in added_ids:
-                            filtered_elements.append(j)
-                            added_ids.append(j.Id)
-                            
-            group_count += 1
-            continue
-        
-        # Add panels
-        if isinstance(e, FamilyInstance) and isinstance(e.MEPModel, ElectricalEquipment):
-            # print("Included: ", e.Name, " ", e.Id)
-            filtered_elements.append(e)
-            continue
-        
-        # Skip circuits since we added it already
-        if isinstance(e, ElectricalSystem):
-            continue
-        
-        # Filter out Switch systems
-        if isinstance(e, MEPSystem):
-            if (e.BaseEquipment):
-                if e.BaseEquipment.Id in added_ids and e not in filtered_elements:
-                    filtered_elements.append(e)
-            continue
-
-        # add anything else extra
-        filtered_elements.append(e)
-        added_ids.append(e.Id)
-
-
-    return filtered_elements
-
 matrix = {
     "01 A-2A": "Right",
+    "05 A-1BR": ""
 }
 
 workset = {
@@ -144,6 +74,7 @@ workset = {
     "Power": 784,
     "Fire": 785,
     "Panel": 835,
+    "HMC": 778,
 }
 
 # Body
@@ -158,8 +89,8 @@ def start():
         int(BuiltInCategory.OST_SwitchSystem),
     ]
 
-    base_view = get_element(3831030)
-    target_view = get_element(5693251)
+    base_view = get_element(3830882)
+    target_view = get_element(5693131)
     set_type = ""
     for unit_type in matrix:
         if unit_type in target_view.Name:
@@ -180,12 +111,14 @@ def start():
             continue
         elements_filtered.append(e)
 
+
     copied_ids = ElementTransformUtils.CopyElements(
                 base_view, 
                 List[ElementId](e.Id for e in elements_filtered), 
                 target_view, 
                 Transform.Identity,
                 CopyPasteOptions())
+
     for id in copied_ids:
         elem = get_element(id)
 
@@ -195,7 +128,7 @@ def start():
             attached_detail = elem.GetAvailableAttachedDetailGroupTypeIds()
             attached_detail_list = list(attached_detail)
             if len(attached_detail) == 1:
-                ids = elem.ShowAttachedDetailGroups(target_view, attached_detail_list[0])
+                elem.ShowAttachedDetailGroups(target_view, attached_detail_list[0])
             else:
                 attached = False
                 for detail in attached_detail_list:
@@ -203,7 +136,7 @@ def start():
                     detail_name = get_parameter(detail_elem, "Type Name")
                     print(detail_name)
                     if matrix[set_type] in detail_name:
-                        ids = elem.ShowAttachedDetailGroups(target_view, detail_elem.Id)
+                        elem.ShowAttachedDetailGroups(target_view, detail_elem.Id)
                         attached = True
                 if not attached:
                     raise Exception(f"No detail attached to {elem.Name}")
@@ -213,14 +146,12 @@ def start():
                 if wrkst in elem.Name:
                     set_parameter(elem, "Workset", workset[wrkst])
                     break
+
         
         # Panel Board
         if is_category_this(elem, BuiltInCategory.OST_ElectricalEquipment):
-            if get_parameter(elem, "Family") != "Unit Panel Board": continue
 
             # Set panel name
-            set_parameter(elem, "Workset", workset["Panel"]) 
-
             panel_name = get_parameter(elem, "Panel Name")
             y = panel_name.split(" ", 1)
 
@@ -232,6 +163,44 @@ def start():
 
             # Set Schedule Level
             set_parameter(elem, "Schedule Level", target_view.GenLevel.Id)
+
+            # Set workset
+            if get_parameter(elem, "Family") == "Unit Panel Board": 
+                set_parameter(elem, "Workset", workset["Panel"]) 
+                
+                template_id = ""
+                if "A1" in panel_name:
+                    template_id = ElementId(7178103)
+                elif "A2":
+                    template_id = ElementId(7123164)
+                ps_view = PanelScheduleView.CreateInstanceView(doc, template_id, elem.Id)
+
+
+                a2_spares = [
+                    [14, 1],
+                    [10, 6],
+                    [11, 6],
+                    [12, 6],
+                    [13, 6],
+                    [14, 6],
+                    [15, 6], 
+                ] 
+
+                a2_double_pole = [14, 1]
+ 
+
+                for sp in a2_spares:
+                    r = sp[0]
+                    c = sp[1]
+                    ps_view.AddSpare(r, c)
+
+                    es = ps_view.GetCircuitByCell(r, c)
+                    set_parameter(es, "Load Name", "SPARE")
+                    if sp == [14, 1]:
+                        set_parameter(es, "Number of Poles", 2)
+
+            if get_parameter(elem, "Family") == "Data Panel Board": 
+                set_parameter(elem, "Workset", workset["HMC"]) 
 
 if activate: 
     start()  

@@ -5,8 +5,8 @@ from io import StringIO
 from collections.abc import Callable
 
 from Autodesk.Revit.DB import *
-from Autodesk.Revit.DB import ElementId, Level, ViewPlan, FilledRegion, CurveLoop, FilteredElementCollector
-
+from Autodesk.Revit.DB import ElementId, BuiltInParameter, SectionType, ViewPlan, FilledRegion, CurveLoop, FilteredElementCollector
+from Autodesk.Revit.DB.Electrical import PanelScheduleView, ElectricalSystem 
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
 
@@ -58,37 +58,39 @@ class Discipline:
         self.template_id = ElementId(template_id)
 
 # Parameters
-target_subgroup = "b. Tower A"
-target_discipline = {
-    "Key Plan": Discipline(3933275, 3858363),
-    # "Key Plan": Discipline(3933275, 3858363) ,
-    # "Crop": Discipline(5891600, 5891630) ,
-    # "Device": Discipline(1969664, 5907457) ,
-    # "Lighting": Discipline(1583644, 3806795),
-} # discipline / view family plan id / view template id
 
-prefix = {
-    "Lighting": "L",
-    "Device": "DP",
-}
+
+a2_spares = [
+    [14, 1],
+    [10, 6],
+    [11, 6],
+    [12, 6],
+    [13, 6],
+    [14, 6],
+    [15, 6], 
+] 
+
+a2_double_pole = [14, 1]
+ 
 # Body 
 @transaction    
 def start():
-    view = get_element(3831030)
-    group = get_element(8367867)
-    # detail_1 = get_element(8525369)
-    # detail_2 = get_element(8556910)
+    # template_a1 = get_element(7178103)
+    # template_a2 = get_element(7123164)
+    # PanelScheduleView.CreateInstanceView(doc, template_a2.Id, ElementId(8668166))
 
-    # # ids = group.ShowAttachedDetailGroups(view, detail_1.Id)
-    # available = group.GetAvailableAttachedDetailGroupTypeIds()
-    # for i in list(available):
-    #     elem = get_element(i)
-    #     y = get_parameter(elem, "Type Name")
-    #     print(y)
+    ps_view = get_element(8671122)
+    for sp in a2_spares:
+        r = sp[0]
+        c = sp[1]
+        ps_view.AddSpare(r, c)
 
-    set_parameter(group, "Workset", 784)
+        es = ps_view.GetCircuitByCell(r, c)
+        set_parameter(es, "Load Name", "SPARE")
+        if sp == [14, 1]:
+            set_parameter(es, "Number of Poles", 2)
 
-    
-if activate:  
-    start()  
-OUT = output.getvalue()  
+ 
+if activate:    
+    start()
+OUT = output.getvalue()       
