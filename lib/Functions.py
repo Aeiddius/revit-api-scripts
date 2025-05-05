@@ -128,3 +128,8 @@ def get_view_range(
           continue
           
     return result
+
+def is_category_this(element: any, category: BuiltInCategory):
+    if not element: return False
+    if not element.Category: return False
+    return element.Category.Id.IntegerValue == int(category)

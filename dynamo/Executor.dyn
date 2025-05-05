@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Duplicator - View Plan.py",
+      "Value": "..\\Scratch.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -26,14 +26,14 @@
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
       "Type": "string",
-      "InitialValue": "2\nParking Level 2B-L - North\nParking Level 2B-L - South\n3\nParking Level 3B-L - North\nParking Level 3B-L - South\n4\nParking Level 4B-L - North\nParking Level 4B-L - South\n5\nParking Level 5B-L - North\nParking Level 5B-L - South\n6\nParking Level 6B-L - North\nParking Level 6B-L - South\n7\nParking Level 7B-L - North\nParking Level 7B-L - South\n8\nParking Level 8B-L - North\nParking Level 8B-L - South\n10\nParking Level 10B-L - North\nParking Level 10B-L - South\n9\nParking Level 9B-L - North\nParking Level 9B-L - South\n",
+      "InitialValue": "",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 420.0,
+      "WatchWidth": 20.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Duplicator - View Plan.py",
-      "InputValue": "..\\Duplicator - View Plan.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Scratch.py",
+      "InputValue": "..\\Scratch.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -455,7 +455,7 @@
       ]
     },
     {
-      "Name": "Duplicator - View Plan.py",
+      "Name": "Scratch.py",
       "ReferenceType": "External",
       "Nodes": [
         "78aaa83004844e7ab1090747e0373c8a"
@@ -517,8 +517,8 @@
         "IsSetAsOutput": true,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 645.4239805195167,
-        "Y": 79.25797761147015
+        "X": 580.7221906796507,
+        "Y": 47.78008868464258
       },
       {
         "Id": "cdb6716dd2284b3eb7b48573c34cea0d",
@@ -622,8 +622,8 @@
       }
     ],
     "Annotations": [],
-    "X": 64.7766719050039,
-    "Y": 227.53404767791582,
-    "Zoom": 0.6502843457263409
+    "X": -45.69409511579073,
+    "Y": 279.46337504691706,
+    "Zoom": 0.6313382426174241
   }
 }

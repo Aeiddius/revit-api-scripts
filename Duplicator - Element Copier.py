@@ -6,7 +6,7 @@ from collections.abc import Callable
 
 from Autodesk.Revit.DB import *
 from Autodesk.Revit.DB import ElementId, Element, ViewPlan, FamilyInstance, BuiltInCategory, FilteredElementCollector, \
-                              MEPSystem, Transform, CopyPasteOptions, ElementTransformUtils
+                              MEPSystem, Transform, CopyPasteOptions, ElementTransformUtils, Group
 from Autodesk.Revit.DB.Electrical import ElectricalEquipment, ElectricalSystem
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
@@ -48,6 +48,7 @@ get_num: Callable[[str], int] = globals().get("get_num")
 get_parameter: Callable[[Element, str], str] = globals().get("get_parameter")
 set_parameter: Callable[[Element, str, any], bool] = globals().get("set_parameter")
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
+is_category_this = globals().get("is_category_this")
 
 #==== Template ends here ====# 
 
@@ -134,41 +135,105 @@ def filter_source_elements(base_view):
 
     return filtered_elements
 
+matrix = {
+    "01 A-2A": "Right",
+}
+
+workset = {
+    "RCP": 783,
+    "Power": 784,
+    "Fire": 785,
+    "Panel": 835,
+}
 
 # Body
 @transaction
 def start():
     include_categories = [
         int(BuiltInCategory.OST_ElectricalEquipment),
-        int(BuiltInCategory.OST_IOSAttachedDetailGroups),
+        # int(BuiltInCategory.OST_IOSAttachedDetailGroups),
         int(BuiltInCategory.OST_IOSModelGroups),
-        int(BuiltInCategory.OST_ElectricalEquipmentTags),
+        # int(BuiltInCategory.OST_ElectricalEquipmentTags),
         int(BuiltInCategory.OST_ElectricalCircuit),
-        int(BuiltInCategory.OST_SwitchSystem)
-
-        # int(BuiltInCategory.OST_IOSModelGroups)
+        int(BuiltInCategory.OST_SwitchSystem),
     ]
 
     base_view = get_element(3831030)
     target_view = get_element(5693251)
+    set_type = ""
+    for unit_type in matrix:
+        if unit_type in target_view.Name:
+            set_type = unit_type
+    if not set_type:
+        raise Exception(f"No type for view [{target_view.Name}] set in matrix") 
+
 
     elements_collected = FilteredElementCollector(doc, base_view.Id).WhereElementIsNotElementType().ToElements()
     elements_filtered = []
-
+    element_tags = []
+    
     for e in elements_collected:
         category = e.Category
         if not category or (category and category.Id.IntegerValue not in include_categories): continue
+        if category.Id.IntegerValue == int(BuiltInCategory.OST_IOSAttachedDetailGroups):
+            element_tags.append(e)
+            continue
         elements_filtered.append(e)
-        print(e)
-    # copied_ids = ElementTransformUtils.CopyElements(
-    #             base_view, 
-    #             List[ElementId](e.Id for e in elements_filtered), 
-    #             target_view, 
-    #             Transform.Identity,
-    #             CopyPasteOptions()
-    #         )
-    # print(copied_ids)
-if activate:
-    start() 
+
+    copied_ids = ElementTransformUtils.CopyElements(
+                base_view, 
+                List[ElementId](e.Id for e in elements_filtered), 
+                target_view, 
+                Transform.Identity,
+                CopyPasteOptions())
+    for id in copied_ids:
+        elem = get_element(id)
+
+        # Groups
+        if is_category_this(elem, BuiltInCategory.OST_IOSModelGroups):
+            # Set detail groups
+            attached_detail = elem.GetAvailableAttachedDetailGroupTypeIds()
+            attached_detail_list = list(attached_detail)
+            if len(attached_detail) == 1:
+                ids = elem.ShowAttachedDetailGroups(target_view, attached_detail_list[0])
+            else:
+                attached = False
+                for detail in attached_detail_list:
+                    detail_elem = get_element(detail)
+                    detail_name = get_parameter(detail_elem, "Type Name")
+                    print(detail_name)
+                    if matrix[set_type] in detail_name:
+                        ids = elem.ShowAttachedDetailGroups(target_view, detail_elem.Id)
+                        attached = True
+                if not attached:
+                    raise Exception(f"No detail attached to {elem.Name}")
+                
+            # Set workset
+            for wrkst in workset:
+                if wrkst in elem.Name:
+                    set_parameter(elem, "Workset", workset[wrkst])
+                    break
+        
+        # Panel Board
+        if is_category_this(elem, BuiltInCategory.OST_ElectricalEquipment):
+            if get_parameter(elem, "Family") != "Unit Panel Board": continue
+
+            # Set panel name
+            set_parameter(elem, "Workset", workset["Panel"]) 
+
+            panel_name = get_parameter(elem, "Panel Name")
+            y = panel_name.split(" ", 1)
+
+            unit_no = y[0]
+            panel_type = y[1]
+
+            panel_name_new = unit_no[0] + target_view.Name.split(" ")[1] + " " + panel_type
+            set_parameter(elem, "Panel Name", panel_name_new) 
+
+            # Set Schedule Level
+            set_parameter(elem, "Schedule Level", target_view.GenLevel.Id)
+
+if activate: 
+    start()  
   
-OUT = output.getvalue()
+OUT = output.getvalue() 
