@@ -49,13 +49,22 @@ def collect_elements(category):
     
 def get_parameter(element, parameter: str) -> str:
     param = element.LookupParameter(parameter)
-    if not param: return None
-    return param.AsValueString()
+    val = param.AsValueString()
+    
+    if not param:
+        param.Dispose()
+        return None
+    param.Dispose()
+    return val
 
 def set_parameter(element, parameter: str, value: any) -> bool:
     param = element.LookupParameter(parameter)
-    if not param: return None
-    return param.Set(value)
+    if not param:
+        param.Dispose()
+        return None
+    res = param.Set(value)
+    param.Dispose()
+    return res
 
 def get_num(str: str) -> int:
   """

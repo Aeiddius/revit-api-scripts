@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Scratch.py",
+      "Value": "..\\Duplicator - Element Copier.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -25,7 +25,7 @@
     {
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
-      "Type": "string",
+      "Type": "unknown",
       "InitialValue": "",
       "Description": "Visualizes a node's output"
     }
@@ -33,7 +33,7 @@
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 20.0,
+      "WatchWidth": 50.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Scratch.py",
-      "InputValue": "..\\Scratch.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Duplicator - Element Copier.py",
+      "InputValue": "..\\Duplicator - Element Copier.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -455,7 +455,7 @@
       ]
     },
     {
-      "Name": "Scratch.py",
+      "Name": "Duplicator - Element Copier.py",
       "ReferenceType": "External",
       "Nodes": [
         "78aaa83004844e7ab1090747e0373c8a"
@@ -517,8 +517,8 @@
         "IsSetAsOutput": true,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 580.7221906796507,
-        "Y": 47.78008868464258
+        "X": 708.3670715729905,
+        "Y": 37.053628105370365
       },
       {
         "Id": "cdb6716dd2284b3eb7b48573c34cea0d",
@@ -622,8 +622,8 @@
       }
     ],
     "Annotations": [],
-    "X": -45.69409511579073,
-    "Y": 279.46337504691706,
-    "Zoom": 0.6313382426174241
+    "X": -233.76842960938262,
+    "Y": 254.0387831132087,
+    "Zoom": 1.2276463871479817
   }
 }

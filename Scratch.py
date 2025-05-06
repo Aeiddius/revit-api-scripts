@@ -70,24 +70,30 @@ a2_spares = [
     [15, 6], 
 ] 
 
+a1_spares = [
+    [14, 1],
+
+] 
+
 a2_double_pole = [14, 1]
+a1_double_pole = [[14, 1]]
  
 # Body 
 @transaction    
 def start():
-    # template_a1 = get_element(7178103)
-    # template_a2 = get_element(7123164)
-    # PanelScheduleView.CreateInstanceView(doc, template_a2.Id, ElementId(8668166))
-
-    ps_view = get_element(8671122)
-    for sp in a2_spares:
+    template_a1 = get_element(7178103)
+    template_a2 = get_element(7123164)
+    # PanelScheduleView.CreateInstanceView(doc, template_a1.Id, ElementId(8693954))
+    
+    ps_view = get_element(8697420)
+    for sp in a1_spares:
         r = sp[0]
         c = sp[1]
         ps_view.AddSpare(r, c)
 
         es = ps_view.GetCircuitByCell(r, c)
         set_parameter(es, "Load Name", "SPARE")
-        if sp == [14, 1]:
+        if sp in a1_double_pole:
             set_parameter(es, "Number of Poles", 2)
 
  
