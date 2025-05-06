@@ -69,13 +69,11 @@ a2_spares = [
     [14, 6],
     [15, 6], 
 ] 
-
 a1_spares = [
     [14, 1],
-
 ] 
 
-a2_double_pole = [14, 1]
+a2_double_pole = [[14, 1]]
 a1_double_pole = [[14, 1]]
  
 # Body 

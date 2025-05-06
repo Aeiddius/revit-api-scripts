@@ -2,6 +2,7 @@
 import clr
 import sys
 import time
+import re
 from io import StringIO
 from collections.abc import Callable
 
@@ -49,7 +50,8 @@ for script in IN[0]: # type: ignore
     exec(script)
 
 # Functions and matrix definition
-matrix: dict[str, any] = locals().get("matrix_a")
+matrix_a: dict[str, any] = locals().get("matrix_a")
+matrix_b: dict[str, any] = locals().get("matrix_b")
 print_member: Callable[[any], None] = globals().get("print_member")
 get_element  = globals().get("get_element")
 get_elements = globals().get("get_elements")
@@ -62,6 +64,7 @@ is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
 
 #==== Template ends here ====# 
+
 
 # Parameters
 matrix = {
@@ -121,8 +124,57 @@ def copy_elements(base_view, target_view, elements_filtered):
                 CopyPasteOptions())
     return copied_ids
 
-# Body
+def get_dependent_views(target_group: str):
+    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Rough-Ins Units")
+    units = {}
+    for view in views:
+        dependent_ids = view.GetDependentViewIds()
+        if not dependent_ids: continue
+        num = get_num(view.Name)
+        units[num] = dependent_ids
+    return units
+
 def start():
+    TARGET_LEVEL = 4
+
+    # Source views
+    source_units = get_dependent_views("1. Working Views")
+
+    # Target views
+    target_units = get_dependent_views("2. Presentation Views")
+
+
+    # Iterate through base view of each level source views based on working views
+    for sview_id in source_units[TARGET_LEVEL]:
+
+        base_view = get_element(sview_id)
+        unit_name = re.search(r"\((.*?)\)", base_view.Name).group(1)
+        unit = matrix_a[unit_name]
+        level = get_num(base_view.GenLevel.Name)
+
+        # Iterate through target units from presentation views based on level
+        for tview_lvl in target_units:
+            if tview_lvl in unit.exclude: continue
+            # Skip if same level as target view
+            if tview_lvl == level: continue
+            # Skip if not level range
+            if not (unit.min <= tview_lvl <= unit.max): continue
+
+            # Rename position dependent
+            unit_name_2 = unit_name
+            if tview_lvl in unit.pos:
+                unit_name_2 = unit.pos[tview_lvl] + " " + unit_name.split(" ")[1]
+
+            # Iterate through dependent views of each target_unit level view
+            for tview_id in target_units[tview_lvl]:
+                target_view = get_element(tview_id)
+                if unit_name_2 not in target_view.Name: continue
+
+                print(f"{base_view.Name} - {unit_name_2} - {target_view.Name}")
+                place_unit(base_view, target_view)
+                return
+            
+def place_unit(base_view: ViewPlan, target_view: ViewPlan):
 
     include_categories = [
         int(BuiltInCategory.OST_ElectricalEquipment),
