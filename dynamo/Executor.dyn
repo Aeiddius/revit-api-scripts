@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Duplicator - Element Copier.py",
+      "Value": "..\\Modifier - View Crop.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -25,15 +25,15 @@
     {
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
-      "Type": "unknown",
-      "InitialValue": "",
+      "Type": "string",
+      "InitialValue": "UNIT 3704 A-2AR-RI\n",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 50.0,
+      "WatchWidth": 162.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Duplicator - Element Copier.py",
-      "InputValue": "..\\Duplicator - Element Copier.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - View Crop.py",
+      "InputValue": "..\\Modifier - View Crop.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -455,7 +455,7 @@
       ]
     },
     {
-      "Name": "Duplicator - Element Copier.py",
+      "Name": "Modifier - View Crop.py",
       "ReferenceType": "External",
       "Nodes": [
         "78aaa83004844e7ab1090747e0373c8a"
@@ -622,8 +622,8 @@
       }
     ],
     "Annotations": [],
-    "X": -233.76842960938262,
-    "Y": 254.0387831132087,
-    "Zoom": 1.2276463871479817
+    "X": -113.1929711460092,
+    "Y": 197.8237989550546,
+    "Zoom": 0.844103493461221
   }
 }

@@ -1,10 +1,11 @@
 class UnitDetail:
 
-  def __init__(self, min, max, pos, exclude=[]):
+  def __init__(self, min, max, pos, exclude=[], ortn=""):
     self.min = min
     self.max = max
     self.pos = pos
     self.exclude = exclude
+    self.ortn = ortn
 
 
 matrix_a = {
@@ -14,17 +15,17 @@ matrix_a = {
   "09 A-2AR.1": UnitDetail(2, 2, {}),
   
   # Level 4A
-  "01 A-2A": UnitDetail(3, 31, {}),
-  "02 A-2B": UnitDetail(3, 31, {}),
-  "03 A-2BR": UnitDetail(3, 37, {}),
-  "04 A-2AR": UnitDetail(2, 37, {2: "03"}),
+  "01 A-2A": UnitDetail(3, 31, {}, ortn="Right"),
+  "02 A-2B": UnitDetail(3, 31, {}, ortn="Right"),
+  "03 A-2BR": UnitDetail(3, 37, {}, ortn="Right"),
+  "04 A-2AR": UnitDetail(2, 37, {2: "03"}, ortn="Right"),
   "05 A-1BR": UnitDetail(2, 35, {2: "04"}),
   "06 A-1B": UnitDetail(2, 35, {2: "05"}),
-  "07 A-2A": UnitDetail(2, 34, {2: "06"}),
-  "08 A-2B": UnitDetail(2, 34, {2: "07"}),
-  "09 A-2BR": UnitDetail(2, 38, {2: "08", 35: "08", 36: "07", 37: "07", 38: "06"}),
-  "10 A-2AR": UnitDetail(3, 38, {35: "09", 36: "08", 37: "08", 38: "07"}),
-  "11 A-1AR": UnitDetail(4, 36, {35: "10", 36: "09",}, [32]),
+  "07 A-2A": UnitDetail(2, 34, {2: "06"}, ortn="Left"),
+  "08 A-2B": UnitDetail(2, 34, {2: "07"}, ortn="Left"),
+  "09 A-2BR": UnitDetail(2, 38, {2: "08", 35: "08", 36: "07", 37: "07", 38: "06"}, ortn="Left"),
+  "10 A-2AR": UnitDetail(3, 38, {35: "09", 36: "08", 37: "08", 38: "07"}, ortn="Left"),
+  "11 A-1AR": UnitDetail(4, 36, {35: "10", 36: "09",}, [32], ortn="Left"),
   "12 A-1A": UnitDetail(4, 31, {}),
 
   # Level 32A

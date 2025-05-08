@@ -102,7 +102,7 @@ panel_spares = {
         "double": [[14, 1]],
     }
 }
- 
+
 
 def get_unit_type(view_name,TOWER):
     view_unit_name = view_name.split(" ", 1)[-1].rsplit('-', 1)[0][2:].strip()
@@ -134,7 +134,7 @@ def copy_elements(base_view, target_view, elements_filtered):
     return copied_ids
 
 def get_dependent_views(target_group: str):
-    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Unit Rough-Ins")
+    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Rough-Ins Units")
     units = {}
     for view in views:
         dependent_ids = view.GetDependentViewIds()
@@ -142,7 +142,7 @@ def get_dependent_views(target_group: str):
         num = get_num(view.Name)
         units[num] = dependent_ids
     return units
- 
+
 def start():
     TARGET_LEVEL = 4
     TOWER = "A"
@@ -156,14 +156,14 @@ def start():
  
     # Iterate through base view of each level source views based on working views
     for sview_id in source_units[TARGET_LEVEL]:
-  
+
         base_view = get_element(sview_id)
         if base_view.Name != TARGET_UNIT: continue
 
         unit_name = re.search(r"\((.*?)\)", base_view.Name).group(1)
         unit = matrix_a[unit_name]
         level = get_num(base_view.GenLevel.Name)
- 
+
         # Iterate through target units from presentation views based on level
         for tview_lvl in target_units:
             if tview_lvl in unit.exclude: continue

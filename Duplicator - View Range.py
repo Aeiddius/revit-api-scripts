@@ -67,43 +67,15 @@ prefix = "RI"
 def start():
 
     # levels = FilteredElementCollector(doc).OfClass(Level).ToElements()
-    target_views = get_view_range(target_group, target_subgroup, "Parking Device")
+    source_views = get_view_range(target_group, target_subgroup, "Parking Device")
+    target_views = get_view_range(target_group, target_subgroup, "Parking Rough-Ins")
 
-    for view in target_views:
-        num = get_num(view.GenLevel.Name)
-        if "BL-U" in view.Name: 
-            continue
-        print(num)
+    for sview, tview in zip(source_views, target_views):
+        if sview.Name.replace("-DP", "") == tview.Name.replace("-RI", ""):
+            view_range = sview.GetViewRange()
+            tview.SetViewRange(view_range)
+            print(view_range)
 
-        new_view = ViewPlan.Create(doc,
-                                    ElementId(view_family_type_id),
-                                    view.GenLevel.Id)
-        new_view.CropBoxVisible = True
-        new_view.CropBoxActive = True
-        new_view.ViewTemplateId = ElementId(view_template_id)
-        new_view.CropBox = view.CropBox
-        set_parameter(new_view, "View Group", target_group)
-        set_parameter(new_view, "View Sub-Group", target_subgroup)
-
-        # new_view.Name = new_view.Name + prefix[discipline]
-        new_view.Name = f"Parking Level {num}B-{prefix}"
-
-        # Create Dependent views 
-        view_dependents = view.GetDependentViewIds()
-        for viewd in view_dependents:
-            viewd_elem = get_element(viewd)
-            viewd_cropmanager = viewd_elem.GetCropRegionShapeManager()
-
-            subnew_id = new_view.Duplicate(ViewDuplicateOption.AsDependent)
-            subview = get_element(subnew_id)
-            subview.CropBoxVisible = True
-            subview.CropBoxActive = True
-            subview.CropBox = viewd_elem.CropBox
-            subview_cropmanager = subview.GetCropRegionShapeManager()
-            subview_cropmanager.SetCropShape(viewd_cropmanager.GetCropShape()[0])
-            subview.Name = viewd_elem.Name.replace("DP", f"{prefix}")
-            set_parameter(subview, "View Sub-Group", "")
-            print(viewd_elem.Name.replace("DP", f"{prefix}"))
  
          
 if activate:   

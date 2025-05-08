@@ -67,43 +67,42 @@ prefix = "RI"
 def start():
 
     # levels = FilteredElementCollector(doc).OfClass(Level).ToElements()
-    target_views = get_view_range(target_group, target_subgroup, "Parking Device")
+    source_views = get_view_range(target_group, target_subgroup, "Parking Lighting")
+    target_views = get_view_range(target_group, target_subgroup, "Parking Rough-Ins")
 
-    for view in target_views:
-        num = get_num(view.GenLevel.Name)
-        if "BL-U" in view.Name: 
-            continue
-        print(num)
+    source_views.sort(key=lambda e: e.Name)
+    target_views.sort(key=lambda e: e.Name)
 
-        new_view = ViewPlan.Create(doc,
-                                    ElementId(view_family_type_id),
-                                    view.GenLevel.Id)
-        new_view.CropBoxVisible = True
-        new_view.CropBoxActive = True
-        new_view.ViewTemplateId = ElementId(view_template_id)
-        new_view.CropBox = view.CropBox
-        set_parameter(new_view, "View Group", target_group)
-        set_parameter(new_view, "View Sub-Group", target_subgroup)
+    for sview in source_views:
+        if sview.Name == "Parking Level 1B-L BL-U North":
+            source_views.remove(sview)
 
-        # new_view.Name = new_view.Name + prefix[discipline]
-        new_view.Name = f"Parking Level {num}B-{prefix}"
-
-        # Create Dependent views 
-        view_dependents = view.GetDependentViewIds()
-        for viewd in view_dependents:
-            viewd_elem = get_element(viewd)
-            viewd_cropmanager = viewd_elem.GetCropRegionShapeManager()
-
-            subnew_id = new_view.Duplicate(ViewDuplicateOption.AsDependent)
-            subview = get_element(subnew_id)
-            subview.CropBoxVisible = True
-            subview.CropBoxActive = True
-            subview.CropBox = viewd_elem.CropBox
-            subview_cropmanager = subview.GetCropRegionShapeManager()
-            subview_cropmanager.SetCropShape(viewd_cropmanager.GetCropShape()[0])
-            subview.Name = viewd_elem.Name.replace("DP", f"{prefix}")
-            set_parameter(subview, "View Sub-Group", "")
-            print(viewd_elem.Name.replace("DP", f"{prefix}"))
+    for sview, tview in zip(source_views, target_views):
+        x = sview.Name.replace("-L", "")
+        y = tview.Name.replace("-RI", "")
+        
+        if sview.Name.replace("-L", "") == tview.Name.replace("-RI", ""):
+            tview.Scale = sview.Scale
+            # scropmanager = sview.GetCropRegionShapeManager()
+            # tcropmanager = tview.GetCropRegionShapeManager() 
+            
+            # tcropmanager.SetCropShape(scropmanager.GetCropShape()[0])
+            # elements = (
+            #     FilteredElementCollector(doc, sview.Id)
+            #     .OfCategory(BuiltInCategory.OST_LightingFixtureTags) 
+            #     .WhereElementIsNotElementType()
+            #     .ToElements()
+            # )
+            print(x, y, "  s")
+            # # if not elements: continue
+            # # copied_ids = ElementTransformUtils.CopyElements(
+            # #             sview, 
+            # #             List[ElementId](e.Id for e in elements), 
+            # #             tview, 
+            # #             Transform.Identity,
+            # #             CopyPasteOptions())
+            # # print(sview.Name, copied_ids)
+ 
  
          
 if activate:   
