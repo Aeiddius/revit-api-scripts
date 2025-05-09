@@ -83,6 +83,9 @@ workset = {
 panel_template = {
     "A1": ElementId(7178103),
     "A2": ElementId(7123164),
+    "B1": ElementId(7665512),
+    "B2": ElementId(7665511),
+    "B3": ElementId(7668613)
 }
 panel_spares = {
     "A2": {
@@ -100,10 +103,52 @@ panel_spares = {
     "A1": {
         "spares": [[14, 1]],
         "double": [[14, 1]],
-    }
+    },
+    "B1": {
+        "spares": [
+            [13 , 1],
+            [14 , 1],
+            [6  , 6], 
+            [7  , 6],
+            [13 , 6],
+            [14 , 6],
+        ],
+        "double": []
+    },
+    "B2": {
+        "spares": [
+            [13 , 1],
+            [14 , 1],
+            [15 , 1],
+            [16 , 1],
+            [17 , 1],
+            [18 , 1],
+            [16 , 6],
+            [17 , 6],
+        ],
+        "double": []
+    },
+    "B3": {
+        "spares": [
+            [13 , 1],
+            [14 , 1],
+            [15 , 1],
+            [16 , 1],
+            [17 , 1],
+            [18 , 6],
+            [19 , 6],
+            [20 , 6],
+        ],
+        "double": []
+    },
 }
- 
 
+ 
+def viewname_get_unit_type(view_name):
+    return view_name.split(" ")[-1].rsplit("-", 1)[0]
+        
+ 
+ 
 def get_unit_type(view_name,TOWER):
     view_unit_name = view_name.split(" ", 1)[-1].rsplit('-', 1)[0][2:].strip()
     set_type = "x"
@@ -133,8 +178,8 @@ def copy_elements(base_view, target_view, elements_filtered):
                 CopyPasteOptions())
     return copied_ids
 
-def get_dependent_views(target_group: str):
-    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Unit Rough-Ins")
+def get_dependent_views(target_group:str, target_subgroup: str):
+    views: List[ViewPlan] = get_view_range(target_group, target_subgroup, "Unit Rough-Ins")
     units = {}
     for view in views:
         dependent_ids = view.GetDependentViewIds()
@@ -148,10 +193,10 @@ def start():
     TOWER = "A"
     TARGET_UNIT = "W_Device Unit 04 (10 A-2AR)"
     # Source views
-    source_units = get_dependent_views("1. Working Views")
+    source_units = get_dependent_views("1. Working Views", "b. Tower A")
 
     # Target views
-    target_units = get_dependent_views("2. Presentation Views")
+    target_units = get_dependent_views("2. Presentation Views", "b. Tower A")
 
  
     # Iterate through base view of each level source views based on working views
@@ -188,6 +233,39 @@ def start():
                 # return 
         
         base_view.Dispose()
+
+def custom_place_tower_b():
+    source = get_dependent_views("2. Presentation Views", "c. Tower B")
+
+    level_8 = source[8] 
+    level_9 = source[9]
+
+    source_views = {}
+    unit_views = {}
+
+    for sid in level_8:
+        base_view = get_element(sid)
+        unit_name = base_view.Name.replace("UNIT ", "")[2:].rsplit("-", 1)[0]
+        source_views[unit_name] = base_view
+
+
+    for tid in level_9:
+        base_view = get_element(tid)
+        unit_name = base_view.Name.replace("UNIT ", "")[2:].rsplit("-", 1)[0]
+        unit_views[unit_name] = base_view
+    done = [] 
+    target_shit = "09 BPR-1D"
+    for base_name in source_views:
+
+        if base_name != target_shit: continue
+        # if base_name in done: continue
+        for target_name in unit_views:
+            if base_name == target_name:
+                base_view = source_views[base_name]
+                target_view = unit_views[target_name]
+                place_unit(base_view, target_view, "B")
+                done.append(base_name)
+
 
 def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
  
@@ -321,7 +399,9 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
         if elem:
             elem.Dispose()
             del elem
+
+
 if activate: 
-    start()  
+    custom_place_tower_b()  
   
 OUT = output.getvalue() 

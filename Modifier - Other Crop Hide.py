@@ -73,7 +73,7 @@ is_category_this = globals().get("is_category_this")
 
 
 def get_dependent_views(target_group: str):
-    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Unit Rough-Ins")
+    views: List[ViewPlan] = get_view_range(target_group, "c. Tower B", "Unit Rough-Ins")
     units = {}
     for view in views:
         dependent_ids = view.GetDependentViewIds()
@@ -88,7 +88,7 @@ def viewname_get_unit_type(view_name):
 # Body 
 @transaction      
 def start(): 
-    TOWER = "A"
+    TOWER = "B"
 
     include_categories = [
         int(BuiltInCategory.OST_ElectricalEquipment),
