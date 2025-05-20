@@ -72,8 +72,8 @@ is_category_this = globals().get("is_category_this")
 # Parameters 
 
 
-def get_dependent_views(target_group: str):
-    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Unit Rough-Ins")
+def get_dependent_views(target_group: str, target_subgroup: str, target_type: str):
+    views: List[ViewPlan] = get_view_range(target_group, target_subgroup, target_type )
     units = {}
     for view in views:
         dependent_ids = view.GetDependentViewIds()
@@ -87,56 +87,67 @@ def viewname_get_unit_type(view_name):
         x = " ".join(view_name.replace("ADA", "").split(" ")[2:3])
         return x + " ADA"
     return view_name.split(" ")[-1].rsplit("-", 1)[0]
-    
+
+def filter_members(e, view):
+    element_to_hide = []
+    for grp_elem_id in e.GetMemberIds():
+        grp_elem = get_element(grp_elem_id)
+        if grp_elem.CanBeHidden(view):
+            element_to_hide.append(grp_elem_id)
+        grp_elem.Dispose()
+    return element_to_hide
 # Body 
 @transaction      
 def start(): 
-    TOWER = "B"
+    TOWER = "A"
+    target_subgroup = "b. Tower A"
+    target_type = "Unit Rough-Ins"
+    target_type = "Unit Device"
 
-    include_categories = [
-        int(BuiltInCategory.OST_ElectricalEquipment),
-        int(BuiltInCategory.OST_IOSModelGroups),
-        int(BuiltInCategory.OST_ElectricalCircuit), 
-        int(BuiltInCategory.OST_SwitchSystem),
-        # int(BuiltInCategory.OST_ElectricalEquipmentTags), 
-    ]
-    
-
-    target_units = get_dependent_views("2. Presentation Views")
+    target_units = get_dependent_views("2. Presentation Views", target_subgroup, target_type)
     for level in target_units:
-        if level != 39: continue
+        # if level != 43: continue
         for tview in target_units[level]:
             
-            unit_view = get_element(tview)
+            unit_view = get_element(tview) 
             element_collector = FilteredElementCollector(doc, unit_view.Id)
-            group_to_hide = []
             element_to_hide = []
             unit_type = viewname_get_unit_type(unit_view.Name)
             unit_Type_1 = f"(Type {unit_type})" 
 
             room_name = TOWER+unit_view.Name.split(" ")[1]
-
-            print(unit_type)
-
-            print(unit_view.Name)
-            print(unit_Type_1)
+            
+            print(unit_view.Name, "| ", unit_type)
             # continue
             for e in element_collector.WhereElementIsNotElementType().ToElements():
                 if is_category_this(e, BuiltInCategory.OST_IOSModelGroups):
-                    if unit_Type_1 not in e.Name and e.CanBeHidden:
-                        group_to_hide.append(e)
+                    if unit_Type_1 not in e.Name and e.CanBeHidden(unit_view):
+                        to_hide = filter_members(e, unit_view)
+                        element_to_hide += to_hide
                 if is_category_this(e, BuiltInCategory.OST_ElectricalEquipment):
                     if room_name not in e.Name and e.CanBeHidden:
                         element_to_hide.append(e.Id)
+                # if is_category_this(e, BuiltInCategory.OST_IOSAttachedDetailGroups):
+                #     x = get_element(e.AttachedParentId)
+                #     if x.Name != unit_Type_1:
+                #         to_hide = filter_members(e)
+                #         element_to_hide += to_hide
+   
 
-            print("\n============\n") 
-            for e in group_to_hide:
+              
+            if len(element_to_hide) == 0:
+                print("Zero Elements to hide")
+                print("---------------------------------\n\n\n")
+                continue
+
+            for elem in element_to_hide:
                 try:
-                    unit_view.HideElements(List[ElementId](e.GetMemberIds() + element_to_hide))
+                    unit_view.HideElements(List[ElementId]([elem]))
                 except:
-                    print(unit_view, unit_view.Id, e.Name)
-                    print(element_to_hide)
- 
+                    print(f"Error: {elem}")
+                    continue
+                print("Sucesss ", elem)
+            print("---------------------------------\n\n\n")
 if activate:     
     start()   
 OUT = output.getvalue()     

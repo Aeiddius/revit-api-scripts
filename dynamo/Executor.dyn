@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Duplicator - Element Copier.py",
+      "Value": "..\\Modifier - Rename.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -26,14 +26,14 @@
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
       "Type": "string",
-      "InitialValue": "",
+      "InitialValue": "Level 02A-L\nLevel 03A-L\nLevel 04A-L\nLevel 01A-L\nLevel 32A-L\nLevel 33A-L\nLevel 34A-L\nLevel 35A-L\nLevel 36A-L\nLevel 37A-L\nLevel 38A-L\nLevel 39A-L\nLevel 40A-L\nLevel 41A-L\nLevel 42A-L\nLevel 43A-L\nLevel RFA-L\nLevel MRA-L\n",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 20.0,
+      "WatchWidth": 420.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Duplicator - Element Copier.py",
-      "InputValue": "..\\Duplicator - Element Copier.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - Rename.py",
+      "InputValue": "..\\Modifier - Rename.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -453,6 +453,13 @@
       "Nodes": [
         "6d0c6df792374be6a94ca1b942f27f1f"
       ]
+    },
+    {
+      "Name": "Modifier - Rename.py",
+      "ReferenceType": "External",
+      "Nodes": [
+        "78aaa83004844e7ab1090747e0373c8a"
+      ]
     }
   ],
   "EnableLegacyPolyCurveBehavior": true,
@@ -510,8 +517,8 @@
         "IsSetAsOutput": true,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 743.2901469314332,
-        "Y": 113.8134096119411
+        "X": 649.5890936910611,
+        "Y": 294.9264828084619
       },
       {
         "Id": "cdb6716dd2284b3eb7b48573c34cea0d",
@@ -615,8 +622,8 @@
       }
     ],
     "Annotations": [],
-    "X": -361.9974100749769,
-    "Y": 237.0441845910673,
-    "Zoom": 1.5773028647605352
+    "X": -390.9620779611146,
+    "Y": 51.854570676913795,
+    "Zoom": 1.039916921851994
   }
 }

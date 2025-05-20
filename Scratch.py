@@ -62,6 +62,8 @@ class Discipline:
 
 a3_spares = [
     [14, 1],
+    [16, 6],
+    [17, 6],
     # [15, 1],
 ] 
 a3_double_pole = [[14, 1]] 
@@ -84,6 +86,6 @@ def start():
             set_parameter(es, "Number of Poles", 2)
  
  
-if activate:    
+if activate:     
     start()
 OUT = output.getvalue()       

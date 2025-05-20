@@ -29,8 +29,8 @@ matrix_a = {
   "12 A-1A": UnitDetail(4, 31, {}),
 
   # Level 32A
-  "02 A-2B.1": UnitDetail(32, 32, {}),
-  "01 A-3E": UnitDetail(32, 32, {}),
+  "02 A-2B.1": UnitDetail(32, 32, {}, ortn="Right"),
+  "01 A-3E": UnitDetail(32, 32, {}), 
 
   # Level 33A
   "01 A-1C": UnitDetail(33, 36, {}),
@@ -41,13 +41,13 @@ matrix_a = {
 
   # Level 36A
   "05 A-3F": UnitDetail(36, 36, {}),
-  "06 A-2B.1": UnitDetail(36, 36, {}),
+  "06 A-2B.1": UnitDetail(36, 36, {}, ortn="Left"),
 
   # Level 37A
   "01 A-3D": UnitDetail(37, 39, {}),
-  "02 A-2D.1": UnitDetail(37, 39, {}),
+  "02 A-2D.1": UnitDetail(37, 39, {}, ortn="Right"),
   "05 A-3G": UnitDetail(37, 37, {}),
-  "06 A-2D.1": UnitDetail(37, 37, {}),
+  "06 A-2D.1": UnitDetail(37, 37, {}, ortn="Left"),
 
   # Level 38A
   "03 A-2BR.1": UnitDetail(38, 38, {}),
@@ -61,14 +61,14 @@ matrix_a = {
 
   # Level 40A
   "01 A-3J": UnitDetail(40, 40, {}),
-  "02 A-2D": UnitDetail(40, 42, {}),
-  "03 A-2DR": UnitDetail(40, 42, {}),
-  "05 A-2D": UnitDetail(40, 42, {}),
+  "02 A-2D": UnitDetail(40, 42, {}, ortn="Right"),
+  "03 A-2DR": UnitDetail(40, 42, {}, ortn="Right"),
+  "05 A-2D": UnitDetail(40, 42, {}, ortn="Left"),
   "06 A-2BR.2": UnitDetail(40, 40, {}),
 
   # Level 41A
   "01 A-3DR": UnitDetail(41, 43, {}),
-  "06 A-2DR": UnitDetail(41, 42, {}),
+  "06 A-2DR": UnitDetail(41, 42, {}, ortn="Left"),
 
   # Level 43A
   "02 A-3C": UnitDetail(43, 43, {}),

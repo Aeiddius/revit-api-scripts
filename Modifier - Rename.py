@@ -67,14 +67,13 @@ target_range = [1, 2]
 def start(): 
 
     views = get_view_range("2. Presentation Views",
-                            "",
-                            "Rough-Ins Units", # default, rooms exists in all views
-                            target_range,
-                            True)
+                            "b. Tower A",
+                            "Unit Lighting")
+
     for view in views:
         print(view.Name)
-        view.Name = view.Name.replace("DP", "RI")
+        view.Name = "Unit " + view.Name
  
 if activate:       
     start()   
-OUT = output.getvalue()       
+OUT = output.getvalue()

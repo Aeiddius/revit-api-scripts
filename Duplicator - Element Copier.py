@@ -129,8 +129,12 @@ panel_spares = {
         "double": [],
     },
     "A3.1": {
-        "spares": [[14, 1], [15, 1]],
-        "double": [],
+        "spares": [
+            [14, 1],
+            [16, 6],
+            [17, 6],
+        ],
+        "double": [[14, 1]] ,
     },
     "B1": {
         "spares": [
@@ -215,11 +219,11 @@ def get_dependent_views(target_group:str, target_subgroup: str):
         num = get_num(view.Name)
         units[num] = dependent_ids
     return units
- 
+  
 def start():
-    TARGET_LEVEL = 41
+    TARGET_LEVEL = 40
     TOWER = "A" 
-    TARGET_UNIT = "W_Device Unit 41 (06 A-2DR)"
+    TARGET_UNIT = "W_Device Unit 40 (05 A-2D)"
     # Source views
     source_units = get_dependent_views("1. Working Views", "b. Tower A")
 
@@ -408,15 +412,15 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
                     template_id = panel_template[panel_type]
                     ps_view = PanelScheduleView.CreateInstanceView(doc, template_id, elem.Id)
                     
-                    for sp in panel_spares[panel_type]["spares"]:
-                        r = sp[0] 
-                        c = sp[1]
-                        ps_view.AddSpare(r, c)
+                    # for sp in panel_spares[panel_type]["spares"]:
+                    #     r = sp[0] 
+                    #     c = sp[1]
+                    #     ps_view.AddSpare(r, c)
 
-                        es = ps_view.GetCircuitByCell(r, c)
-                        set_parameter(es, "Load Name", "SPARE")
-                        if sp in panel_spares[panel_type]["double"]:
-                            set_parameter(es, "Number of Poles", 2)
+                    #     es = ps_view.GetCircuitByCell(r, c)
+                    #     set_parameter(es, "Load Name", "SPARE")
+                    #     if sp in panel_spares[panel_type]["double"]:
+                    #         set_parameter(es, "Number of Poles", 2)
                 
                 # Disposal
                 ps_view.Dispose()

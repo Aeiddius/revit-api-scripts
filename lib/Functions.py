@@ -51,7 +51,7 @@ def collect_elements(base_view, categories=[]):
 
     # elements filter
     for e in element_collector.WhereElementIsNotElementType().ToElements():
-        category = e.Category1
+        category = e.Category
         if not category or (category and category.Id.IntegerValue not in include_categories): continue
         elements_filtered.append(e)
     return elements_filtered
