@@ -83,11 +83,27 @@ workset = {
 panel_template = {
     "A1": ElementId(7178103),
     "A2": ElementId(7123164),
+    "A2.1": ElementId(9573549),
+    "A3.1": ElementId(9372255),
+    "A3.2": ElementId(9222896),
+    "A3": ElementId(8642555),
     "B1": ElementId(7665512),
     "B2": ElementId(7665511),
     "B3": ElementId(7668613)
 }
 panel_spares = {
+    "A3": {
+        "spares": [
+            [14, 1],
+            [10 , 6],
+            [11 , 6],
+            [12 , 6],
+            [13 , 6],
+            [18 , 6],
+            [19 , 6],
+        ],
+        "double": [[14, 1]]
+    },
     "A2": {
         "spares": [
             [14, 1],
@@ -103,6 +119,18 @@ panel_spares = {
     "A1": {
         "spares": [[14, 1]],
         "double": [[14, 1]],
+    },
+    "A2.1": {
+        "spares": [[14, 1]],
+        "double": [[14, 1]],
+    },
+    "A3.2": {
+        "spares": [[14, 1], [15, 1]],
+        "double": [],
+    },
+    "A3.1": {
+        "spares": [[14, 1], [15, 1]],
+        "double": [],
     },
     "B1": {
         "spares": [
@@ -147,7 +175,7 @@ panel_spares = {
 def viewname_get_unit_type(view_name):
     return view_name.split(" ")[-1].rsplit("-", 1)[0]
         
- 
+  
  
 def get_unit_type(view_name,TOWER):
     view_unit_name = view_name.split(" ", 1)[-1].rsplit('-', 1)[0][2:].strip()
@@ -189,9 +217,9 @@ def get_dependent_views(target_group:str, target_subgroup: str):
     return units
  
 def start():
-    TARGET_LEVEL = 4
-    TOWER = "A"
-    TARGET_UNIT = "W_Device Unit 04 (10 A-2AR)"
+    TARGET_LEVEL = 41
+    TOWER = "A" 
+    TARGET_UNIT = "W_Device Unit 41 (06 A-2DR)"
     # Source views
     source_units = get_dependent_views("1. Working Views", "b. Tower A")
 
@@ -230,8 +258,8 @@ def start():
                 # print(f"{base_view.Name} - {unit_name_2} - {target_view.Name}")
                 place_unit(base_view, target_view, TOWER)
                 target_view.Dispose()
-                # return 
-        
+                # return
+ 
         base_view.Dispose()
 
 def custom_place_tower_b():
@@ -254,7 +282,8 @@ def custom_place_tower_b():
         unit_name = base_view.Name.replace("UNIT ", "")[2:].rsplit("-", 1)[0]
         unit_views[unit_name] = base_view
     done = [] 
-    target_shit = "09 BPR-1D"
+    target_shit = "08 BPR-2B"
+    # target_shit = "13 BPR-2A"
     for base_name in source_views:
 
         if base_name != target_shit: continue
@@ -334,7 +363,7 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
                         attached = True
 
                     # Disposal
-                    detail_elem.Dispose()
+                    detail_elem.Dispose() 
                     del detail_name
                 if not attached:
                     raise Exception(f"No detail attached to {elem.Name}")
@@ -402,6 +431,6 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
 
 
 if activate: 
-    custom_place_tower_b()  
+    start()  
   
 OUT = output.getvalue() 

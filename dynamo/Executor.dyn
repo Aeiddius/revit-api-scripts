@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Modifier - View Crop.py",
+      "Value": "..\\Duplicator - Element Copier.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -26,14 +26,14 @@
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
       "Type": "string",
-      "InitialValue": "UNIT 3704 A-2AR-RI\n",
+      "InitialValue": "",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 162.0,
+      "WatchWidth": 20.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - View Crop.py",
-      "InputValue": "..\\Modifier - View Crop.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Duplicator - Element Copier.py",
+      "InputValue": "..\\Duplicator - Element Copier.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -453,13 +453,6 @@
       "Nodes": [
         "6d0c6df792374be6a94ca1b942f27f1f"
       ]
-    },
-    {
-      "Name": "Modifier - View Crop.py",
-      "ReferenceType": "External",
-      "Nodes": [
-        "78aaa83004844e7ab1090747e0373c8a"
-      ]
     }
   ],
   "EnableLegacyPolyCurveBehavior": true,
@@ -517,8 +510,8 @@
         "IsSetAsOutput": true,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 708.3670715729905,
-        "Y": 37.053628105370365
+        "X": 743.2901469314332,
+        "Y": 113.8134096119411
       },
       {
         "Id": "cdb6716dd2284b3eb7b48573c34cea0d",
@@ -558,7 +551,7 @@
         "Excluded": false,
         "ShowGeometry": true,
         "X": 435.64892966122517,
-        "Y": -305.09022359316526
+        "Y": -306.2460378746391
       },
       {
         "Id": "5c26d691b1e8472297aa9408ee11d29f",
@@ -622,8 +615,8 @@
       }
     ],
     "Annotations": [],
-    "X": -113.1929711460092,
-    "Y": 197.8237989550546,
-    "Zoom": 0.844103493461221
+    "X": -361.9974100749769,
+    "Y": 237.0441845910673,
+    "Zoom": 1.5773028647605352
   }
 }

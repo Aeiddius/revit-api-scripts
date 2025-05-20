@@ -43,10 +43,19 @@ def get_element_via_parameter(elements, parameter_name, parameter_value):
             continue
     return result
 
-def collect_elements(category):
+def collect_elements(base_view, categories=[]):
     doc = globals().get("doc")
-    return FilteredElementCollector(doc).OfCategory(category).WhereElementIsNotElementType().ToElements()
-    
+    element_collector = FilteredElementCollector(doc, base_view.Id)
+    elements_filtered = []
+    include_categories = [int(i) for i in categories]
+
+    # elements filter
+    for e in element_collector.WhereElementIsNotElementType().ToElements():
+        category = e.Category1
+        if not category or (category and category.Id.IntegerValue not in include_categories): continue
+        elements_filtered.append(e)
+    return elements_filtered
+
 def get_parameter(element, parameter: str) -> str:
     param = element.LookupParameter(parameter)
     val = param.AsValueString()

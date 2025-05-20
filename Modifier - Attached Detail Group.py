@@ -62,7 +62,7 @@ get_parameter: Callable[[Element, str], str] = globals().get("get_parameter")
 set_parameter: Callable[[Element, str, any], bool] = globals().get("set_parameter")
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
-
+collect_elements = globals().get("collect_elements")
 
 #==== Template ends here ====# 
 
@@ -72,8 +72,8 @@ is_category_this = globals().get("is_category_this")
 # Parameters 
 
 
-def get_dependent_views(target_group: str):
-    views: List[ViewPlan] = get_view_range(target_group, "b. Tower A", "Unit Rough-Ins")
+def get_dependent_views():
+    views: List[ViewPlan] = get_view_range("2. Presentation Views", "b. Tower A", "Unit Rough-Ins")
     units = {}
     for view in views:
         dependent_ids = view.GetDependentViewIds()
@@ -82,61 +82,37 @@ def get_dependent_views(target_group: str):
         units[num] = dependent_ids
     return units
  
-def viewname_get_unit_type(view_name):
-    if "ADA" in view_name:
-        x = " ".join(view_name.replace("ADA", "").split(" ")[2:3])
-        return x + " ADA"
-    return view_name.split(" ")[-1].rsplit("-", 1)[0]
-    
+
 # Body 
 @transaction      
 def start(): 
-    TOWER = "B"
 
-    include_categories = [
-        int(BuiltInCategory.OST_ElectricalEquipment),
-        int(BuiltInCategory.OST_IOSModelGroups),
-        int(BuiltInCategory.OST_ElectricalCircuit), 
-        int(BuiltInCategory.OST_SwitchSystem),
-        # int(BuiltInCategory.OST_ElectricalEquipmentTags), 
-    ]
-    
-
-    target_units = get_dependent_views("2. Presentation Views")
-    for level in target_units:
-        if level != 39: continue
-        for tview in target_units[level]:
+    target_units = get_dependent_views()
+    for lvl in target_units:
+        # if lvl != 3: continue
+        primary_view = ""
+        print(lvl)
+        # Unit
+        for view_id in target_units[lvl]:
+            unit_view = get_element(view_id)
             
-            unit_view = get_element(tview)
-            element_collector = FilteredElementCollector(doc, unit_view.Id)
-            group_to_hide = []
-            element_to_hide = []
-            unit_type = viewname_get_unit_type(unit_view.Name)
-            unit_Type_1 = f"(Type {unit_type})" 
+            # Check if primary id added
+            if not primary_view:
+                primary_view = get_element(unit_view.GetPrimaryViewId())
+            groups = collect_elements(unit_view, [BuiltInCategory.OST_IOSModelGroups])
 
-            room_name = TOWER+unit_view.Name.split(" ")[1]
+            # Groups inside view
 
-            print(unit_type)
-
-            print(unit_view.Name)
-            print(unit_Type_1)
-            # continue
-            for e in element_collector.WhereElementIsNotElementType().ToElements():
-                if is_category_this(e, BuiltInCategory.OST_IOSModelGroups):
-                    if unit_Type_1 not in e.Name and e.CanBeHidden:
-                        group_to_hide.append(e)
-                if is_category_this(e, BuiltInCategory.OST_ElectricalEquipment):
-                    if room_name not in e.Name and e.CanBeHidden:
-                        element_to_hide.append(e.Id)
-
-            print("\n============\n") 
-            for e in group_to_hide:
-                try:
-                    unit_view.HideElements(List[ElementId](e.GetMemberIds() + element_to_hide))
-                except:
-                    print(unit_view, unit_view.Id, e.Name)
-                    print(element_to_hide)
+            for group in groups:
+                reference_level = get_num(get_parameter(group, "Reference Level"))
+                if reference_level != lvl: continue
+                ids = list(group.GetShownAttachedDetailGroupTypeIds(primary_view))
+                print(group.Name, ids)
+                # break    
+            print("\n")
+            # break
+        print("=====================\n\n")
  
 if activate:     
-    start()   
+    start()    
 OUT = output.getvalue()     
