@@ -68,15 +68,45 @@ target_range = [1, 43]
 @transaction      
 def start(): 
     # Get list of views
-    base_view = get_element(5693059)
-    target_view = active_view
-
-    scropmanager = base_view.GetCropRegionShapeManager()
-    tcropmanager = target_view.GetCropRegionShapeManager() 
+    device_views = get_view_range("2. Presentation Views",
+                        "b. Tower A",
+                        "Enlarged Device")
+    roughins_views = get_view_range("2. Presentation Views",
+                        "b. Tower A",
+                        "Enlarged Rough-Ins")
     
-    tcropmanager.SetCropShape(scropmanager.GetCropShape()[0])
- 
-    print(target_view.Name)
+    dict_rough_ins = {}
+    dict_devices = {}
+    for view in roughins_views:
+        num = get_num(view.Name)
+        dict_rough_ins[num] = view
+    
+    for view in device_views:
+        num = get_num(view.Name)
+        dict_devices[num] = view
+    
+    for lvl_num in dict_devices:
+        if not lvl_num: continue
+        if lvl_num <=3: continue
+        
+        view_rins = dict_rough_ins[lvl_num]
+        north_view_rins = get_element(view_rins.Duplicate(ViewDuplicateOption.AsDependent))
+        south_view_rins = get_element(view_rins.Duplicate(ViewDuplicateOption.AsDependent))
+
+        north_view_rins.Name = north_view_rins.Name.replace("- Dependent 1", "NORTH")
+        south_view_rins.Name = south_view_rins.Name.replace("- Dependent 2", "SOUTH")
+
+        dependent_views = dict_devices[lvl_num].GetDependentViewIds()
+        for dpdnt_id in dependent_views:
+            dpdnt_view = get_element(dpdnt_id)
+            if "NORTH" in dpdnt_view.Name:
+                crop_manager = north_view_rins.GetCropRegionShapeManager()
+                crop_manager.SetCropShape(list(dpdnt_view.GetCropRegionShapeManager().GetCropShape())[0])
+            if "SOUTH" in dpdnt_view.Name:
+                crop_manager = south_view_rins.GetCropRegionShapeManager()
+                crop_manager.SetCropShape(list(dpdnt_view.GetCropRegionShapeManager().GetCropShape())[0])
+        
+
 if activate:     
     start()   
 OUT = output.getvalue()     

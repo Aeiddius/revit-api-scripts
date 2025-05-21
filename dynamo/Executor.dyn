@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Modifier - Rename.py",
+      "Value": "..\\Modifier - Views Property Copier.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -26,7 +26,7 @@
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
       "Type": "string",
-      "InitialValue": "Level 02A-L\nLevel 03A-L\nLevel 04A-L\nLevel 01A-L\nLevel 32A-L\nLevel 33A-L\nLevel 34A-L\nLevel 35A-L\nLevel 36A-L\nLevel 37A-L\nLevel 38A-L\nLevel 39A-L\nLevel 40A-L\nLevel 41A-L\nLevel 42A-L\nLevel 43A-L\nLevel RFA-L\nLevel MRA-L\n",
+      "InitialValue": "UNIT 0201 A-2C-L\nUNIT 0202 A-2BR.3-L\nUNIT 0203 A-2AR-L\nUNIT 0204 A-1BR-L\nUNIT 0205 A-1B-L\nUNIT 0206 A-2A-L\nUNIT 0207 A-2B-L\nUNIT 0208 A-2BR-L\nUNIT 0209 A-2AR.1-L\nUNIT 0301 A-2A-L\nUNIT 0302 A-2B-L\nUNIT 0303 A-2BR-L\nUNIT 0304 A-2AR-L\nUNIT 0305 A-1BR-L\nUNIT 0306 A-1B-L\nUNIT 0307 A-2A-L\nUNIT 0308 A-2B-L\nUNIT 0309 A-2BR-L\nUNIT 0310 A-2AR-L\nUNIT 0401 A-2A-L\nUNIT 0402 A-2B-L\nUNIT 0403 A-2BR-L\n",
       "Description": "Visualizes a node's output"
     }
   ],
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - Rename.py",
-      "InputValue": "..\\Modifier - Rename.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - Views Property Copier.py",
+      "InputValue": "..\\Modifier - Views Property Copier.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -455,7 +455,7 @@
       ]
     },
     {
-      "Name": "Modifier - Rename.py",
+      "Name": "Modifier - Views Property Copier.py",
       "ReferenceType": "External",
       "Nodes": [
         "78aaa83004844e7ab1090747e0373c8a"
@@ -622,8 +622,8 @@
       }
     ],
     "Annotations": [],
-    "X": -390.9620779611146,
-    "Y": 51.854570676913795,
-    "Zoom": 1.039916921851994
+    "X": -318.01430557201775,
+    "Y": 166.36494220377062,
+    "Zoom": 0.9808739540294981
   }
 }

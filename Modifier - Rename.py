@@ -68,12 +68,13 @@ def start():
 
     views = get_view_range("2. Presentation Views",
                             "b. Tower A",
-                            "Unit Lighting")
+                            "Enlarged Lighting",
+                            dependent_only=True)
 
     for view in views:
         print(view.Name)
-        view.Name = "Unit " + view.Name
- 
+        view.Name = view.Name.replace("- Dependent 1", "NORTH")
+        view.Name = view.Name.replace("- Dependent 2", "SOUTH")
 if activate:       
     start()   
 OUT = output.getvalue()

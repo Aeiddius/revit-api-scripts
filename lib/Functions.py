@@ -92,10 +92,10 @@ def is_dependent(view: ViewPlan) -> bool:
 
     :param view: view plan of any type
     """
-    if "Dependent on" in view.LookupParameter("Dependency").AsValueString():
+    if "Dependent on" in get_parameter(view, "Dependency"):
         return True
     return False
-
+ 
 def get_view_range(
         target_group: str,
         target_subgroup: str,
