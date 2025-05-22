@@ -70,20 +70,34 @@ a3_double_pole = [[14, 1]]
 # Body   
 @transaction    
 def start():
-    template_a1 = get_element(7178103) 
-    template_a2 = get_element(7123164)
-    # PanelScheduleView.CreateInstanceView(doc, template_a1.Id, ElementId(8693954))
+     
+    placed_view = get_element(10396451)
+    placed_view.SetBoxCenter(XYZ(0.873540264, 0.347243307, 2.827690972))
+    # set_parameter(placed_view, "Family and Type", ElementId(1942347))
+    # Calculate new location point 
+    # pvbox = placed_view.GetBoxOutline()
+    # max_p = pvbox.MaximumPoint
+    # min_p = pvbox.MinimumPoint
     
-    ps_view = get_element(9561093)
-    for sp in a3_spares:
-        r = sp[0]
-        c = sp[1]
-        ps_view.AddSpare(r, c)
+    # diff = max_p.Subtract(min_p) 
+    # new_x = (diff.X/2) + 0
+    # new_y = (diff.Y/2) - 0.07
+    # placed_view.SetBoxCenter(XYZ(new_x, new_y, 0))
 
-        es = ps_view.GetCircuitByCell(r, c)
-        set_parameter(es, "Load Name", "SPARE")
-        if sp in a3_double_pole:
-            set_parameter(es, "Number of Poles", 2)
+    # template_a1 = get_element(7178103) 
+    # template_a2 = get_element(7123164)
+    # # PanelScheduleView.CreateInstanceView(doc, template_a1.Id, ElementId(8693954))
+    
+    # ps_view = get_element(9561093)
+    # for sp in a3_spares:
+    #     r = sp[0]
+    #     c = sp[1]
+    #     ps_view.AddSpare(r, c)
+
+    #     es = ps_view.GetCircuitByCell(r, c)
+    #     set_parameter(es, "Load Name", "SPARE")
+    #     if sp in a3_double_pole:
+    #         set_parameter(es, "Number of Poles", 2)
  
  
 if activate:     

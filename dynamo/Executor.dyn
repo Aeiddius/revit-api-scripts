@@ -17,7 +17,7 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Modifier - Views Property Copier.py",
+      "Value": "..\\Generator - Sheet.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -25,15 +25,15 @@
     {
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
-      "Type": "string",
-      "InitialValue": "UNIT 0201 A-2C-L\nUNIT 0202 A-2BR.3-L\nUNIT 0203 A-2AR-L\nUNIT 0204 A-1BR-L\nUNIT 0205 A-1B-L\nUNIT 0206 A-2A-L\nUNIT 0207 A-2B-L\nUNIT 0208 A-2BR-L\nUNIT 0209 A-2AR.1-L\nUNIT 0301 A-2A-L\nUNIT 0302 A-2B-L\nUNIT 0303 A-2BR-L\nUNIT 0304 A-2AR-L\nUNIT 0305 A-1BR-L\nUNIT 0306 A-1B-L\nUNIT 0307 A-2A-L\nUNIT 0308 A-2B-L\nUNIT 0309 A-2BR-L\nUNIT 0310 A-2AR-L\nUNIT 0401 A-2A-L\nUNIT 0402 A-2B-L\nUNIT 0403 A-2BR-L\n",
+      "Type": "unknown",
+      "InitialValue": "",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 420.0,
+      "WatchWidth": 50.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +188,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - Views Property Copier.py",
-      "InputValue": "..\\Modifier - Views Property Copier.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Generator - Sheet.py",
+      "InputValue": "..\\Generator - Sheet.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -382,7 +382,7 @@
     {
       "Start": "c20e4fc3825f42fbb4eded7df1e1e920",
       "End": "7014678b0a6049e0b2c33a7a5bcd8509",
-      "Id": "3359d70a4494417dbb7787a735cf5b4f",
+      "Id": "3daf7656b4704db6b304e90f3ccc968f",
       "IsHidden": "False"
     },
     {
@@ -455,7 +455,7 @@
       ]
     },
     {
-      "Name": "Modifier - Views Property Copier.py",
+      "Name": "Generator - Sheet.py",
       "ReferenceType": "External",
       "Nodes": [
         "78aaa83004844e7ab1090747e0373c8a"
@@ -517,8 +517,8 @@
         "IsSetAsOutput": true,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 649.5890936910611,
-        "Y": 294.9264828084619
+        "X": 745.1789998581555,
+        "Y": 67.9743713030087
       },
       {
         "Id": "cdb6716dd2284b3eb7b48573c34cea0d",
@@ -537,8 +537,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 339.7126873284471,
-        "Y": 69.51553279829571
+        "X": 419.87620670187215,
+        "Y": 138.74766316625366
       },
       {
         "Id": "f401e2490b1a437faf6531c8c5bfec8a",
@@ -547,8 +547,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 491.83249247815206,
-        "Y": -129.7268618481321
+        "X": 655.8033275601578,
+        "Y": -188.93855229441192
       },
       {
         "Id": "78aaa83004844e7ab1090747e0373c8a",
@@ -557,8 +557,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 435.64892966122517,
-        "Y": -306.2460378746391
+        "X": 434.53528024836345,
+        "Y": -309.5869861132244
       },
       {
         "Id": "5c26d691b1e8472297aa9408ee11d29f",
@@ -617,13 +617,13 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 337.83586933151275,
-        "Y": 309.2485119893546
+        "X": 354.23295283971333,
+        "Y": 399.43247128445773
       }
     ],
     "Annotations": [],
-    "X": -318.01430557201775,
-    "Y": 166.36494220377062,
-    "Zoom": 0.9808739540294981
+    "X": -566.2095410428383,
+    "Y": 291.57935375768733,
+    "Zoom": 1.5099070966560806
   }
 }

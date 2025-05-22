@@ -66,15 +66,12 @@ target_range = [1, 2]
 @transaction     
 def start(): 
 
-    views = get_view_range("2. Presentation Views",
-                            "b. Tower A",
-                            "Enlarged Lighting",
-                            dependent_only=True)
+    views = get_view_range("3. Utility Views",
+                            "a. Key Plan",
+                            "Key Plan A", dependent_only=True)
 
     for view in views:
-        print(view.Name)
-        view.Name = view.Name.replace("- Dependent 1", "NORTH")
-        view.Name = view.Name.replace("- Dependent 2", "SOUTH")
+        view.Name = view.Name.replace("KB", "RI")
 if activate:       
     start()   
-OUT = output.getvalue()
+OUT = output.getvalue() 

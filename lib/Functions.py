@@ -69,10 +69,10 @@ def get_parameter(element, parameter: str) -> str:
 def set_parameter(element, parameter: str, value: any) -> bool:
     param = element.LookupParameter(parameter)
     if not param:
-        param.Dispose()
+        # param.Dispose()
         return None
     res = param.Set(value)
-    param.Dispose()
+    # param.Dispose()
     return res
 
 def get_num(str: str) -> int:
@@ -95,7 +95,16 @@ def is_dependent(view: ViewPlan) -> bool:
     if "Dependent on" in get_parameter(view, "Dependency"):
         return True
     return False
- 
+
+def get_dependent_views(view: ViewPlan):
+    result = []
+    dependent_views = view.GetDependentViewIds()
+    if len(dependent_views) == 0: return []
+    for id in dependent_views:
+        subview = get_element(id)
+        result.append(subview)
+    return result
+
 def get_view_range(
         target_group: str,
         target_subgroup: str,
@@ -103,6 +112,7 @@ def get_view_range(
         range_value=None,
         dependent_only: bool = False,
         disable_subgroup_filter: bool = False,
+        exclude_names=[]
     ) -> list[ViewPlan]:
     """
     Function to get list of views
@@ -125,26 +135,36 @@ def get_view_range(
         if not disable_subgroup_filter:
             if view.LookupParameter("View Sub-Group").AsValueString() != target_subgroup: continue
         if view.LookupParameter("Type").AsValueString() != target_family_type: continue
-        if dependent_only==False and is_dependent(view): continue
-        if dependent_only==True and not is_dependent(view): continue
+        if is_dependent(view): continue
+
+        skip = False
+        for exclude in exclude_names:
+            if exclude in view.Name:
+                skip = True
+                break
+        if skip: continue
 
         # Exception check
         if range_value and len(range_value) != 2:
             raise ValueError("range_value must be a list of exactly two integers")
 
         # Range value
-        if range_value:
-          min_range = range_value[0]
-          max_range = range_value[1]
+        if range_value != None:
+            min_range = range_value[0]
+            max_range = range_value[1]
+            level = get_num(view.GenLevel.Name)
 
-          level = get_num(view.GenLevel.Name)
-          if min_range <= level <= max_range:
-              result.append(view)
-              continue
+            if not (min_range <= level <= max_range):
+                continue
+
+        # Check if dependent
+        if dependent_only == True:
+            dpdnt_views = get_dependent_views(view)
+            if dpdnt_views != []:
+                result += dpdnt_views
         else:
-          result.append(view)
-          continue
-          
+            result.append(view)
+
     return result
 
 def is_category_this(element: any, category: BuiltInCategory):

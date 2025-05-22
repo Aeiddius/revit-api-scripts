@@ -123,10 +123,15 @@ def start():
     target_subgroup = "b. Tower A"
     target_type = "Enlarged Rough-Ins"
     
-    target_units = get_dependent_views(target_group, target_subgroup, target_type)
-    for lvl in target_units:
-        # if lvl in [40]: continue
-        if lvl != 40: continue 
+    target_units = get_view_range(target_group, target_subgroup, target_type)
+    for view in target_units:
+        groups = collect_elements(view, [BuiltInCategory.OST_IOSModelGroups])
+        ids = list(group.GetShownAttachedDetailGroupTypeIds(primary_view))
+
+
+        print(lvl.Name)
+
+        continue
         primary_view = ""   
         print(lvl)
         # Unit
@@ -142,10 +147,9 @@ def start():
             groups = collect_elements(unit_view, [BuiltInCategory.OST_IOSModelGroups])
             
             set_type = get_unit_type(unit_view.Name, "A")
-            print(" Set: ", set_type)
-            print("\n\n")
+
+
             # Groups inside view
-            # continue
             for group in groups:
                 reference_level = get_num(get_parameter(group, "Reference Level"))
                 if reference_level != lvl: continue
@@ -174,12 +178,7 @@ def start():
                         del detail_name
                     if not attached:
                         raise Exception(f"No detail attached to {group.Name}")
-                    
-                # group.ShowAttachedDetailGroups(primary_view, ElementId)
-                # break    
-            print("\n")
-            # break
-        print("=====================\n\n")
+
  
 if activate:     
     start()    
