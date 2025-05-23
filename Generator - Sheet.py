@@ -168,7 +168,7 @@ def calculate_viewport_pos(p_viewport, xy: Offset):
 def start():
     TOWER = "A"
     target_type = "Unit Rough-Ins"
-    target_range = [2, 2]
+    target_range = [2, 4]
 
     target_subgroup = "b. Tower A" if TOWER == "A" else "c. Tower B"
 
@@ -204,13 +204,34 @@ def start():
                            exclude_names=["MRA", "RFA"])
     # return
     for target_view in views:
-        if "09 A-2AR.1" not in target_view.Name:
-            continue
+
+        # if target_view.Name != "UNIT 0209 A-2AR.1-RI":
+        #     continue
         unit = UnitView(target_view)
-        m_unit = matrix["A"][unit.matrix_format]
+        m_unit = ""
+        if unit.matrix_format not in matrix[TOWER]:
+            for i in matrix[TOWER]:
+                if unit.unit_type not in i:
+                    continue
+                if unit.level not in matrix[TOWER][i].pos:
+                    continue
+                x = matrix[TOWER][i].pos[unit.level]
+                test_name = f"{x} {unit.unit_type}"
+                if test_name == unit.matrix_format:
+                    # print("true!", i, unit.matrix_format)
+                    m_unit = matrix[TOWER][i]
+                    break
+        else:
+            m_unit = matrix[TOWER][unit.matrix_format]
+
+        print(target_view.Name, m_unit.sheet_data)
+
+        # continue
+        # set_parameter(target_view, "Title on Sheet",
+        #               f"UNIT {unit.unit_no} {unit.unit_type}\n{unit.view_type_full.upper()}")
+        # continue
         title_block_id = title_blocks[m_unit.sheet]
         print("\n\n")
-
         # Create new Sheet
         new_sheet = ViewSheet.Create(doc, title_block_id)
         new_sheet.SheetCollectionId = ElementId(4451604)
@@ -237,23 +258,28 @@ def start():
         p_viewport.SetBoxCenter(m_unit.sheet_data["ViewportCenter"])
 
         # Get Panel Schedule
-        view = get_element(p_viewport.ViewId)
+        # view = get_element(p_viewport.ViewId)
         panel_schedule = panel_dict[f"A{unit.unit_no}"]
         panel_instance = PanelScheduleSheetInstance.Create(
             doc, panel_schedule.Id, new_sheet)
         panel_instance.Origin = m_unit.sheet_data["PanelOrigin"]
 
         # Place keyplan
-        kp_view = keyplans_dict[f"{unit.unit_no}-{unit.view_type}"]
+        kp_view = keyplans_dict[f"{unit.unit_no}-{unit.view_type}".strip()]
+        print("THIS SHIT: ", f"{unit.unit_no}-{unit.view_type}")
+        pprint(keyplans_dict)
+        # try:
         kp_viewport = Viewport.Create(doc, new_sheet.Id,
                                       kp_view.Id,
                                       XYZ(0, 0, 0))
         set_parameter(kp_viewport, "Family and Type",
                       ElementId(1942347))  # Keyplan
         kp_viewport.SetBoxCenter(m_unit.sheet_data["KeyplanCenter"])
+        # except:
+        #     print("PROBLEM: ", target_view.Name)
 
-        break
-
+        # break
+        continue
         # Getting titleblock for parameter set
         dependent_ids = new_sheet.GetDependentElements(None)
         titleblock = ""
