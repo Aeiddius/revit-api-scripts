@@ -71,14 +71,30 @@ a3_spares = [
     # [15, 1],
 ]
 a3_double_pole = [[14, 1]]
-# Body
+# Body ss
 
 
 @transaction
 def start():
 
-    placed_view = get_element(10396451)
-    placed_view.SetBoxCenter(XYZ(0.873540264, 0.347243307, 2.827690972))
+    # original = get_element(10549621)
+    # target = get_element(10549868)
+
+    # target.Origin = original.Origin
+
+    # return
+    placed_view = get_element(10551907)
+    placed_view.SetBoxCenter(XYZ(0.765528942, 1.779766219, -0.222395833))
+    # Horiontal
+    # placed_view.SetBoxCenter(XYZ(0.727590417, 0.186369829, -0.241145833))
+
+    # Original
+    # placed_view.SetBoxCenter(XYZ(0.737794410, 1.236961806, 0.358854167))
+
+
+# (0.751355251, 0.195793393, -0.166145833)
+    # placed_view.Origin = XYZ(0.058865373, 1.389748524, 0.000000000)
+    # placed_view.Origin = XYZ(0.058865373, 0.387171030, 0.000000000)
     # set_parameter(placed_view, "Family and Type", ElementId(1942347))
     # Calculate new location point
     # pvbox = placed_view.GetBoxOutline()
@@ -104,7 +120,6 @@ def start():
     #     set_parameter(es, "Load Name", "SPARE")
     #     if sp in a3_double_pole:
     #         set_parameter(es, "Number of Poles", 2)
-
 
 if activate:
     start()

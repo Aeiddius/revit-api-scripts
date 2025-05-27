@@ -188,23 +188,95 @@ matrix_a = {
     }),
 
     # Level 32A
-    "02 A-2B.1": UnitDetail(32, 32, {}, ortn="Right"),
-    "01 A-3E": UnitDetail(32, 32, {}),
+    "01 A-3E": UnitDetail(32, 32, {},
+                          sheet="17x24",
+                          sheet_data={
+        "LabelLineLength": 0.22205823822202575,
+        "LabelOffset": XYZ(1.715923848, -0.114649602, 0.000000000),
+        "PanelOrigin": XYZ(0.059379923, 0.396008524, 0.000000000),
+        "ViewportCenter": XYZ(0.973026777, 0.761049253, -0.208333333),
+        "KeyplanCenter": XYZ(0.745364670, 0.181701632, 0.395572917),
+    }),
+    "02 A-2B.1": UnitDetail(32, 32, {}, ortn="Right",
+                            sheet="17x11",
+                            sheet_data={
+        "LabelLineLength": 0.24404811228786083,
+        "LabelOffset": XYZ(0.580838713, -0.033337674, 0.000000000),
+        "PanelOrigin": XYZ(0.058865373, 1.389748524, 0.000000000),
+        "ViewportCenter": XYZ(0.458915390, 0.567139675, -0.208333333),
+        "KeyplanCenter": XYZ(0.737794410, 1.236961806, 0.395572917),
+    }),
 
     # Level 33A
-    "01 A-1C": UnitDetail(33, 36, {}),
-    "02 A-2D.3": UnitDetail(33, 36, {}),
+    "01 A-1C": UnitDetail(33, 36, {},
+                          sheet="17x11",
+                          sheet_data={
+        "LabelLineLength": 0.24022497342716975,
+        "LabelOffset": XYZ(0.546359905, -0.120925279, 0.000000000),
+        "PanelOrigin": XYZ(0.058865373, 1.389748524, 0.000000000),
+        "ViewportCenter": XYZ(0.539549230, 0.563120513, -0.213541667),
+        "KeyplanCenter": XYZ(0.737794410, 1.236961806, 0.395572917),
+    }),
+    "02 A-2D.3": UnitDetail(33, 36, {},
+                            sheet="17x11",
+                            sheet_data={
+        "LabelLineLength": 0.24214579029430805,
+        "LabelOffset": XYZ(0.589545364, -0.054164817, 0.000000000),
+        "PanelOrigin": XYZ(0.058865373, 1.389748524, 0.000000000),
+        "ViewportCenter": XYZ(0.464667655, 0.555250537, -0.213541667),
+        "KeyplanCenter": XYZ(0.737794410, 1.236961806, 0.395572917),
+    }),
 
     # Level 35A
-    "07 A-3B": UnitDetail(35, 35, {}),
+    "07 A-3B": UnitDetail(35, 35, {},
+                          sheet="24x17",
+                          sheet_data={
+        "LabelLineLength": 0.26438349842724085,
+        "LabelOffset": XYZ(0.823496809, -0.323858050, 0.000000000),
+        "PanelOrigin": XYZ(0.059379923, 0.396008524, 0.000000000),
+        "ViewportCenter": XYZ(0.760277276, 1.186466724, -0.213541667),
+        "KeyplanCenter": XYZ(0.745364670, 0.181701632, 0.395572917),
+    }),
 
     # Level 36A
-    "05 A-3F": UnitDetail(36, 36, {}),
-    "06 A-2B.1": UnitDetail(36, 36, {}, ortn="Left"),
+    "05 A-3F": UnitDetail(36, 36, {},
+                          sheet="24x17",
+                          sheet_data={
+        "LabelLineLength": 0.2353879250556854,
+        "LabelOffset": XYZ(1.665313202, -0.157369290, 0.000000000),
+        "PanelOrigin": XYZ(0.059379923, 0.396008524, 0.000000000),
+        "ViewportCenter": XYZ(1.025589735, 0.804998105, -0.213541667),
+        "KeyplanCenter": XYZ(0.745364670, 0.181701632, 0.395572917),
+    }),
+    "06 A-2B.1": UnitDetail(36, 36, {}, ortn="Left",
+                            sheet="17x11",
+                            sheet_data={
+        "LabelLineLength": 0.2353879250556854,
+        "LabelOffset": XYZ(1.665313202, -0.157369290, 0.000000000),
+        "PanelOrigin": XYZ(0.058865373, 1.389748524, 0.000000000),
+        "ViewportCenter": XYZ(1.025589735, 0.804998105, -0.213541667),
+        "KeyplanCenter": XYZ(0.737794410, 1.236961806, 0.395572917),
+    }),
 
     # Level 37A
-    "01 A-3D": UnitDetail(37, 39, {}),
-    "02 A-2D.1": UnitDetail(37, 39, {}, ortn="Right"),
+    "01 A-3D": UnitDetail(37, 39, {},
+                          sheet="17x24",
+                          sheet_data={
+        "LabelLineLength": 0.24075170396064616,
+        "LabelOffset": XYZ(1.346162453, -0.428238061, 0.000000000),
+        "PanelOrigin": XYZ(0.059379923, 0.396008524, 0.000000000),
+        "ViewportCenter": XYZ(1.071565146, 0.908362543, -0.213541667),
+        "KeyplanCenter": XYZ(0.745364670, 0.181701632, 0.395572917),
+    }),
+    "02 A-2D.1": UnitDetail(37, 39, {}, ortn="Right",
+                            sheet="17x11",
+                            sheet_data={
+        "LabelLineLength": 0.2444867204325598,
+        "LabelOffset": XYZ(0.818162131, -0.042360909, 0.000000000),
+        "PanelOrigin": XYZ(0.058865373, 1.389748524, 0.000000000),
+        "ViewportCenter": XYZ(0.342059733, 0.572022755, -0.213541667),
+        "KeyplanCenter": XYZ(0.737794410, 1.236961806, 0.395572917),
+    }),
     "05 A-3G": UnitDetail(37, 37, {}),
     "06 A-2D.1": UnitDetail(37, 37, {}, ortn="Left"),
 

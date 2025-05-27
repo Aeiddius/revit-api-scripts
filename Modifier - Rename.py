@@ -70,10 +70,19 @@ def start():
 
     views = get_view_range("3. Utility Views",
                            "a. Key Plan",
-                           "Key Plan A", dependent_only=True)
+                           "Key Plan A",
+                           [4, 4],
+                           dependent_only=True)
 
     for view in views:
-        view.Name = view.Name.replace("B-L", "-L")
+        if "RI" not in view.Name:
+            continue
+        print(view.Name)
+        subnew_id = view.Duplicate(ViewDuplicateOption.AsDependent)
+        subview = get_element(subnew_id)
+        subview.Name = view.Name.replace("RI", "W")
+        subview.CropBoxActive = True
+        subview.CropBoxVisible = False
 
 
 if activate:

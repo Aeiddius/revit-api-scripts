@@ -177,6 +177,7 @@ def start():
         if "Keyplan" in viewport_type:
             KeyplanCenter = viewport.GetBoxCenter()
     # print('sheet="17x11",')
+    print('sheet="17x11",')
     print("sheet_data={")
     print(f'"LabelLineLength": {LabelLineLength},')
     print(f'"LabelOffset": XYZ{LabelOffset},')
@@ -191,3 +192,5 @@ if activate:
     start()
 OUT = output.getvalue()
 
+
+# s ss s    s   s s  s

@@ -59,7 +59,7 @@ set_parameter: Callable[[Element, str, any],
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
 collect_elements = globals().get("collect_elements")
-
+UnitView = locals().get("UnitView")
 # ==== Template ends here ====#
 
 # This script is intended to generate unit sheet views
@@ -94,63 +94,6 @@ class Offset:
         self.y = y
 
 
-class UnitView:
-    view_types = {
-        "L": "Lighting",
-        "RI": "Rough-Ins",
-        "D": "Device",
-    }
-
-    def __init__(self, view: ViewPlan):
-        self.view = view
-        self.level: int = 0  # ex. 2
-        self.level_str: str = ""  # ex. 02
-        self.unit_no: str = ""  # 0201
-        self.unit_pos: str = ""  # 01
-        self.unit_type: str = ""    # ex. A-2B
-        self.view_type: str = ""  # RI/L/D
-        self.view_type_full: str = ""  # ex. Lighting/Rough-Ins/Device
-
-        self.group_format: str = ""  # ex. (Type A-2B)
-        self.matrix_format: str = ""  # ex. 01 A-2B
-        self.full_format: str = ""  # ex. 0201 A-2B
-
-        self._initialize()
-
-    def _initialize(self):
-        # view.Name = UNIT 0203 A-2AR-L
-
-        # ["0203", "A-2AR-L"]
-        x = self.view.Name.replace("UNIT ", "").split(" ")
-        self.unit_no = x[0].strip()  # "0203"
-
-        # ["A-2AR", "L"]
-        y = x[1].rsplit("-", 1)
-        self.unit_type = y[0].strip()  # "A-2AR"
-        self.view_type = y[1].strip()  # L
-        self.view_type_full = UnitView.view_types[y[1]].strip()  # "Lighting"
-        self.group_format = f"(Type {y[0]})".strip()
-
-        self.unit_pos = self.unit_no[2:].strip()
-        self.level = int(self.unit_no[:2])
-        self.level_str = self.unit_no[:2].strip()
-
-        # "01 A-2B"
-        self.matrix_format = f"{self.unit_pos} {self.unit_type}"
-        # "0201 A-2B"
-        self.full_format = f"{self.unit_no} {self.unit_type}"
-
-    def print_data(self):
-        print("View Name: ", self.view.Name)
-        print("  Level: ", self.level_str)
-        print("  Unit no.: ", self.unit_no)
-        print("  Unit pos.: ", self.unit_pos)
-        print("  Unit Type: ", self.unit_type)
-        print("  Unit View Type: ", self.view_type)
-        print("  Unit Group Format: ", self.group_format)
-        print("  Unit Matrix Format: ", self.matrix_format)
-
-
 def calculate_viewport_pos(p_viewport, xy: Offset):
     pvbox = p_viewport.GetBoxOutline()
     max_p = pvbox.MaximumPoint
@@ -164,17 +107,60 @@ def calculate_viewport_pos(p_viewport, xy: Offset):
 # Body
 
 
+def get_sheet_details(sheet):
+    sheet_data = {
+        "LabelLineLength": "",
+        "LabelOffset": "",
+        "PanelOrigin": "",
+        "ViewportCenter": "",
+        "KeyplanCenter": "",
+        "Type": "",
+    }
+    elements = sheet.GetDependentElements(None)
+    for id in elements:
+        elem = get_element(id)
+        if is_category_this(elem, BuiltInCategory.OST_PanelScheduleGraphics):
+            sheet_data["PanelOrigin"] = elem.Origin
+        if is_category_this(elem, BuiltInCategory.OST_Viewports):
+            if "Title w/ Line" in elem.Name:
+                sheet_data["ViewportCenter"] = elem.GetBoxCenter()
+                sheet_data["LabelLineLength"] = elem.LabelLineLength
+                sheet_data["LabelOffset"] = elem.LabelOffset
+            if "Keyplan" in elem.Name:
+                sheet_data["KeyplanCenter"] = elem.GetBoxCenter()
+        if is_category_this(elem, BuiltInCategory.OST_TitleBlocks):
+            sheet_data["Type"] = elem.GetTypeId()
+
+    return sheet_data
+
+
+def get_sheet_datas():
+    sheet_list: list[ViewPlan] = FilteredElementCollector(
+        doc).OfClass(ViewSheet).ToElements()
+    sheet_dict = {}
+    for sheet in sheet_list:
+        if get_parameter(sheet, "Sheet Collection") != "0. Working Sheet":
+            continue
+        unit_key = f"{sheet.SheetNumber[-2:]} {sheet.Name}"
+
+        sheet_dict[unit_key] = get_sheet_details(sheet)
+
+    return sheet_dict
+
+#
+
+
 @transaction
 def start():
     TOWER = "A"
     target_type = "Unit Rough-Ins"
-    target_range = [2, 4]
+    target_type = "Unit Device"
+    target_range = [2, 44]
 
     target_subgroup = "b. Tower A" if TOWER == "A" else "c. Tower B"
 
-    title_blocks = {
-        "17x11": ElementId(5860782)
-    }
+    sheet_dicts = get_sheet_datas()
+    pprint(sheet_dicts)
 
     # Retrieve panel schedules
     panel_schedules = FilteredElementCollector(
@@ -185,7 +171,7 @@ def start():
             panel_name = panel.Name.split(" ")[0]
             panel_dict[panel_name] = panel
 
-    # Get keyplans
+    # Get keyplanss
     keyplans_dict = {}
     keyplan_views = get_view_range("3. Utility Views",
                                    "a. Key Plan",
@@ -209,6 +195,7 @@ def start():
         #     continue
         unit = UnitView(target_view)
         m_unit = ""
+        m_unit_key = ""
         if unit.matrix_format not in matrix[TOWER]:
             for i in matrix[TOWER]:
                 if unit.unit_type not in i:
@@ -220,17 +207,15 @@ def start():
                 if test_name == unit.matrix_format:
                     # print("true!", i, unit.matrix_format)
                     m_unit = matrix[TOWER][i]
+                    m_unit_key = i
                     break
         else:
             m_unit = matrix[TOWER][unit.matrix_format]
-
-        print(target_view.Name, m_unit.sheet_data)
+            m_unit_key = unit.matrix_format
 
         # continue
-        # set_parameter(target_view, "Title on Sheet",
-        #               f"UNIT {unit.unit_no} {unit.unit_type}\n{unit.view_type_full.upper()}")
-        # continue
-        title_block_id = title_blocks[m_unit.sheet]
+        sheet_data = sheet_dicts[m_unit_key]
+        title_block_id = sheet_data["Type"]
         print("\n\n")
         # Create new Sheet
         new_sheet = ViewSheet.Create(doc, title_block_id)
@@ -242,6 +227,7 @@ def start():
         set_parameter(new_sheet, "Sheet Number",
                       f"EA{unit.unit_no} ({unit.view_type})")
         set_parameter(new_sheet, "Sheet Name", f"{unit.unit_type}")
+        set_parameter(new_sheet, "Designed By", "Ianic-Dynamo")
 
         # Place view
         p_viewport = Viewport.Create(doc, new_sheet.Id,
@@ -249,62 +235,32 @@ def start():
                                      XYZ(0, 0, 0))
         set_parameter(p_viewport, "Family and Type",
                       ElementId(1582579))  # Title w/ Line
-        p_viewport.LabelLineLength = m_unit.sheet_data["LabelLineLength"]
-        p_viewport.LabelOffset = m_unit.sheet_data["LabelOffset"]
+        p_viewport.LabelLineLength = sheet_data["LabelLineLength"]
+        p_viewport.LabelOffset = sheet_data["LabelOffset"]
         set_parameter(p_viewport, "Title on Sheet",
                       f"UNIT {unit.unit_no} {unit.unit_type}\n{unit.view_type_full.upper()}")
 
         # Calculate new location point
-        p_viewport.SetBoxCenter(m_unit.sheet_data["ViewportCenter"])
+        p_viewport.SetBoxCenter(sheet_data["ViewportCenter"])
 
-        # Get Panel Schedule
+        # Get Panel  Schedule
         # view = get_element(p_viewport.ViewId)
         panel_schedule = panel_dict[f"A{unit.unit_no}"]
         panel_instance = PanelScheduleSheetInstance.Create(
             doc, panel_schedule.Id, new_sheet)
-        panel_instance.Origin = m_unit.sheet_data["PanelOrigin"]
+        panel_instance.Origin = sheet_data["PanelOrigin"]
 
         # Place keyplan
         kp_view = keyplans_dict[f"{unit.unit_no}-{unit.view_type}".strip()]
-        print("THIS SHIT: ", f"{unit.unit_no}-{unit.view_type}")
-        pprint(keyplans_dict)
-        # try:
+
         kp_viewport = Viewport.Create(doc, new_sheet.Id,
                                       kp_view.Id,
                                       XYZ(0, 0, 0))
         set_parameter(kp_viewport, "Family and Type",
                       ElementId(1942347))  # Keyplan
-        kp_viewport.SetBoxCenter(m_unit.sheet_data["KeyplanCenter"])
-        # except:
-        #     print("PROBLEM: ", target_view.Name)
+        kp_viewport.SetBoxCenter(sheet_data["KeyplanCenter"])
 
         # break
-        continue
-        # Getting titleblock for parameter set
-        dependent_ids = new_sheet.GetDependentElements(None)
-        titleblock = ""
-        for dpdnt in dependent_ids:
-            elem = get_element(dpdnt)
-            if not elem.Category:
-                continue
-            if elem.Category.Id.IntegerValue == int(BuiltInCategory.OST_TitleBlocks):
-                titleblock = elem
-
-        # Setting parameters
-        sheet_number = "U" + target_subgroup[-1] + \
-            target_view.Name.split(" ")[1] + \
-            "." + str(discipline_count)
-        unit_number = target_view.Name.split(" ")[1][2:4]
-        scale = get_parameter(target_view, "View Scale")
-
-        set_parameter(titleblock, "Unit no.", unit_number)
-        set_parameter(titleblock, "View Scale", scale)
-        set_parameter(new_sheet, "Sheet Number", sheet_number)
-        set_parameter(new_sheet, "Designed By", "Ianic-Dynamo")
-
-        doc.Create.PlaceGroup(new_sheet, get_element(5883378))
-
-        break
 
 
 if activate:

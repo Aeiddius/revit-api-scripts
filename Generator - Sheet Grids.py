@@ -8,7 +8,7 @@ from pprint import pprint
 from Autodesk.Revit.DB import *
 from Autodesk.Revit.DB import ElementId, ViewSheet, ViewPlan, \
     Element, Viewport, BuiltInCategory, XYZ, \
-    DatumExtentType , DatumEnds
+    DatumExtentType, DatumEnds
 from Autodesk.Revit.DB.Electrical import PanelScheduleView, PanelScheduleSheetInstance
 
 from RevitServices.Persistence import DocumentManager
@@ -59,6 +59,7 @@ set_parameter: Callable[[Element, str, any],
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
 collect_elements = globals().get("collect_elements")
+UnitView = locals().get("UnitView")
 
 # ==== Template ends here ====#
 
@@ -77,24 +78,17 @@ matrix = {
 
 # Body
 
-
-@transaction
-def start():
-    source_view = get_element(3830822)
-    target_view = get_element(5693377)
-
+def aligngrids(source_view, target_view):
     source_grids = collect_elements(source_view, [BuiltInCategory.OST_Grids])
 
     grid_dict = {}
     for i in source_grids:
         grid_dict[i.Id] = i
 
-
     for g_id in grid_dict:
         grid = grid_dict[g_id]
-        # grid.PropagateToViews(source_view, List[ElementId]([target_view.Id]))
-        # continue
-        # Set the fuckign bubble
+
+        # Set bubbles
         for datum in [DatumEnds.End0, DatumEnds.End1]:
             bubble_seen = grid.IsBubbleVisibleInView(datum, source_view)
             if bubble_seen:
@@ -102,14 +96,62 @@ def start():
             else:
                 grid.HideBubbleInView(datum, target_view)
 
-        curves = grid.GetCurvesInView(DatumExtentType.ViewSpecific, source_view)[0]
+        # Set Curve Length
+        srcCurve = grid.GetCurvesInView(
+            DatumExtentType.ViewSpecific, source_view)[0]
+        trgCurve = grid.GetCurvesInView(
+            DatumExtentType.ViewSpecific, target_view)[0]
 
-        print(grid.Name, curves, curves.ApproximateLength)
-        # grid.SetCurveInView(DatumExtentType.ViewSpecific, target_view, curves)
+        p0 = srcCurve.GetEndPoint(0)
+        p1 = srcCurve.GetEndPoint(1)
 
-        print("\n")
+        proj0 = trgCurve.Project(p0).XYZPoint
+        proj1 = trgCurve.Project(p1).XYZPoint
+
+        boundSeg = Line.CreateBound(proj0, proj1)
+
+        grid.SetCurveInView(DatumExtentType.ViewSpecific,
+                            target_view, boundSeg)
+
+
+@transaction
+def start():
+    TOWER = "A"
+    views = get_view_range("2. Presentation Views",
+                           "b. Tower A", "Unit Device", dependent_only=True)
+    working_views = get_view_range("1. Working Views",
+                                   "b. Tower A", "Unit Rough-Ins", dependent_only=True)
+    w_views_dict = {}
+    for w_view in working_views:
+        name = w_view.Name.split("(")[1].replace(")", "").strip()
+        w_views_dict[name] = w_view
+
+    for view in views:
+        unit = UnitView(view)
+        m_unit = ""
+        m_unit_key = ""
+        if unit.matrix_format not in matrix[TOWER]:
+            for i in matrix[TOWER]:
+                if unit.unit_type not in i:
+                    continue
+                if unit.level not in matrix[TOWER][i].pos:
+                    continue
+                x = matrix[TOWER][i].pos[unit.level]
+                test_name = f"{x} {unit.unit_type}"
+                if test_name == unit.matrix_format:
+                    m_unit = matrix[TOWER][i]
+                    m_unit_key = i
+                    break
+        else:
+            m_unit = matrix[TOWER][unit.matrix_format]
+            m_unit_key = unit.matrix_format
+        print(m_unit_key, view.Name)
+
+        source_view = w_views_dict[m_unit_key]
+        aligngrids(source_view, view)
+#
 
 
 if activate:
     start()
-OUT = output.getvalue() 
+OUT = output.getvalue()
