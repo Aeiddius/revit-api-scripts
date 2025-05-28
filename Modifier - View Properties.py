@@ -80,6 +80,7 @@ matrix = {
 
 def aligngrids(source_view, target_view):
     source_grids = collect_elements(source_view, [BuiltInCategory.OST_Grids])
+    crop_curve = target_view.GetCropRegionShapeManager().GetCropShape()[0]
 
     grid_dict = {}
     for i in source_grids:
@@ -96,29 +97,53 @@ def aligngrids(source_view, target_view):
             else:
                 grid.HideBubbleInView(datum, target_view)
 
-        # Set Curve Length
+        # Set Curve Length 
         srcCurve = grid.GetCurvesInView(
             DatumExtentType.ViewSpecific, source_view)[0]
         trgCurve = grid.GetCurvesInView(
             DatumExtentType.ViewSpecific, target_view)[0]
 
-        p0 = srcCurve.GetEndPoint(0)
+        p0 = srcCurve.GetEndPoint(0) 
         p1 = srcCurve.GetEndPoint(1)
-
+        
+        p0 = XYZ(p0.X, p0.Y-1100, p0.Z)  
+        p1 = XYZ(p1.X, p1.Y +1100, p1.Z)
+ 
+        # print(p1)   
+        # print(p0)
         proj0 = trgCurve.Project(p0).XYZPoint
         proj1 = trgCurve.Project(p1).XYZPoint
 
         boundSeg = Line.CreateBound(proj0, proj1)
+        # for curve in crop_curve.GetCurveLoopIterator():
+        #     if grid.IsCurveValidInView(DatumExtentType.ViewSpecific, target_view, curve):
+        #         grid.SetCurveInView(DatumExtentType.ViewSpecific, target_view, curve)
+        #         print("Valid: ", curve)
+        #     else:
+        #         print("Not valid: ", curve)
+            
 
         grid.SetCurveInView(DatumExtentType.ViewSpecific,
                             target_view, boundSeg)
 
+def set_crop_region(source_view, target_view):
+    target_manager = target_view.GetCropRegionShapeManager()
+    source_manager = source_view.GetCropRegionShapeManager()
+
+    target_manager.SetCropShape(source_manager.GetCropShape()[0])
+    target_manager.LeftAnnotationCropOffset = source_manager.LeftAnnotationCropOffset
+    target_manager.RightAnnotationCropOffset = source_manager.RightAnnotationCropOffset
+    target_manager.TopAnnotationCropOffset = source_manager.TopAnnotationCropOffset
+    target_manager.BottomAnnotationCropOffset = source_manager.BottomAnnotationCropOffset
+
+def set_view_range(source_view, target_view):
+    target_view.SetViewRange(source_view.GetViewRange())
 
 @transaction
 def start():
     TOWER = "A"
     views = get_view_range("2. Presentation Views",
-                           "b. Tower A", "Unit Device", dependent_only=True)
+                           "b. Tower A", "Unit Rough-Ins", dependent_only=True)
     working_views = get_view_range("1. Working Views",
                                    "b. Tower A", "Unit Rough-Ins", dependent_only=True)
     w_views_dict = {}
@@ -127,6 +152,7 @@ def start():
         w_views_dict[name] = w_view
 
     for view in views:
+        if view.Name != "UNIT 0202 A-2BR.3-RI": continue
         unit = UnitView(view)
         m_unit = ""
         m_unit_key = ""
@@ -149,9 +175,9 @@ def start():
 
         source_view = w_views_dict[m_unit_key]
         aligngrids(source_view, view)
-#
-
-
+        set_crop_region(source_view, view)
+        set_view_range(source_view, view)
 if activate:
     start()
 OUT = output.getvalue()
+#  s s s  s a s s

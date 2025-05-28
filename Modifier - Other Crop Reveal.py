@@ -6,7 +6,7 @@ from collections.abc import Callable
 
 from Autodesk.Revit.DB import *
 from Autodesk.Revit.DB import ElementId, UV, ViewPlan, \
-    Element, CurveArray, SketchPlane, XYZ, \
+    Element, CurveArray, SketchPlane, TemporaryViewMode, \
     FilteredElementCollector, BuiltInCategory
 
 from RevitServices.Persistence import DocumentManager
@@ -94,48 +94,25 @@ def start():
     TOWER = "A"
     target_subgroup = "b. Tower A"
     # target_type = "Unit Rough-Ins"
-    target_type = "Unit Rough-Ins"
+    target_type = "Unit Device"
 
     target_units = get_view_range(
-        "1. Working Views", target_subgroup, target_type, [5, 44], dependent_only=True, exclude_names=["MRA", "RFA"])
+        "2. Presentation Views", target_subgroup, target_type, dependent_only=True, exclude_names=["MRA", "RFA"])
 
     for view in target_units:
-        view.CropBoxActive = True
-        #  continue
         print(view.Name)
         unit = UnitView(view)
+        element_to_reveal = []
+        view.EnableRevealHiddenMode()
+        for e in collect_elements(view, [BuiltInCategory.OST_ElectricalEquipment]):
 
-        # unit_no = view.Name.replace("W_Unit ", "").replace("(", "").replace(")", "").strip().replace(" ", "").split("A")[0]
-        # type = view.Name.replace("W_Unit ", "").split("(")[-1].replace(")", "").split(" ")[-1]
-        # group_format = f"(Type {type})"
+            if f"{TOWER}{unit.unit_no}" in e.Name:
+                element_to_reveal.append(e.Id)
 
-        element_to_hide = []
-        view.CropBoxActive = False
-        for e in collect_elements(view, [BuiltInCategory.OST_ElectricalEquipment, BuiltInCategory.OST_IOSModelGroups, BuiltInCategory.OST_IOSAttachedDetailGroups]):
-            print(e)
-            if is_category_this(e, BuiltInCategory.OST_ElectricalEquipment):
-                # if f"{TOWER}{unit_no}" not in e.Name and e.CanBeHidden:
-                if f"{TOWER}{unit.unit_no}" not in e.Name and e.CanBeHidden:
-                    element_to_hide.append(e.Id)
-
-            if is_category_this(e, BuiltInCategory.OST_IOSModelGroups):
-                # if group_format in e.Name: continue
-                if unit.group_format in e.Name: continue
-                to_hide = filter_members(e, view)
-                element_to_hide += to_hide
-
-            if is_category_this(e, BuiltInCategory.OST_IOSAttachedDetailGroups):
-                parent = get_parameter(e, "Attached to")
-                # if group_format in parent: continue
-                if unit.group_format in parent: continue
-                to_hide = filter_members(e, view)
-                element_to_hide += to_hide
- 
-        if element_to_hide != []:
-            print(" ", element_to_hide)
-            view.HideElements(List[ElementId](element_to_hide))
-        view.CropBoxActive = True
-        #  break
+        if element_to_reveal != []:
+            view.UnhideElements(List[ElementId](element_to_reveal))
+            print("Revealed: ", element_to_reveal)
+        view.DisableTemporaryViewMode( TemporaryViewMode.RevealHiddenElements )
 
 
 if activate:

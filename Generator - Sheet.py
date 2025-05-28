@@ -132,7 +132,7 @@ def get_sheet_details(sheet):
             sheet_data["Type"] = elem.GetTypeId()
 
     return sheet_data
-
+ 
 
 def get_sheet_datas():
     sheet_list: list[ViewPlan] = FilteredElementCollector(
@@ -153,7 +153,7 @@ def get_sheet_datas():
 @transaction
 def start():
     TOWER = "A"
-    target_type = "Unit Rough-Ins"
+    # target_type = "Unit Rough-Ins"
     target_type = "Unit Device"
     target_range = [2, 44]
 
