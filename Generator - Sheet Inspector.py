@@ -152,45 +152,58 @@ def calculate_viewport_pos(p_viewport, xy: Offset):
 # Body
 
 
-@transaction
-def start():
-    # active_view
-
+def get(sheet_source):
+    KeyplanCenter =""
     ViewportCenter = ""
-    LabelLineLength = ""
     LabelOffset = ""
-    PanelOrigin = ""
-    KeyplanCenter = ""
+    
+    panel_schedule = collect_elements(
+        sheet_source, [BuiltInCategory.OST_PanelScheduleGraphics])[0]
+    PanelOrigin = panel_schedule.Origin
+
+    viewports = collect_elements(sheet_source, [BuiltInCategory.OST_Viewports])
+    viewports.reverse()
+    for viewport in viewports:
+        viewport_type = get_parameter(viewport, "Family and Type")
+        if "Keyplan" in viewport_type:
+            KeyplanCenter = viewport.GetBoxCenter()
+        else:
+            ViewportCenter = viewport.GetBoxCenter()
+            LabelOffset = viewport.LabelOffset
+
+    return KeyplanCenter, PanelOrigin, ViewportCenter, LabelOffset
+
+def set(KeyplanCenter, PanelOrigin, ViewportCenter, LabelOffset):
+    global active_view
 
     panel_schedule = collect_elements(
         active_view, [BuiltInCategory.OST_PanelScheduleGraphics])[0]
-    panel_origin = panel_schedule.Origin
+    panel_schedule.Origin = PanelOrigin
 
     viewports = collect_elements(active_view, [BuiltInCategory.OST_Viewports])
     viewports.reverse()
     for viewport in viewports:
         viewport_type = get_parameter(viewport, "Family and Type")
-        if "Title w/ Line" in viewport_type:
-            ViewportCenter = viewport.GetBoxCenter()
-            LabelLineLength = viewport.LabelLineLength
-            LabelOffset = viewport.LabelOffset
-        if "Keyplan" in viewport_type:
-            KeyplanCenter = viewport.GetBoxCenter()
-    # print('sheet="17x11",')
-    print('sheet="17x11",')
-    print("sheet_data={")
-    print(f'"LabelLineLength": {LabelLineLength},')
-    print(f'"LabelOffset": XYZ{LabelOffset},')
-    # print(f'"LabelOffset": XYZ(0.636081024, -0.088131822, 0.000000000),')
-    print(f'"PanelOrigin": XYZ{panel_origin},')
-    print(f'"ViewportCenter": XYZ{ViewportCenter},')
-    print(f'"KeyplanCenter": XYZ{KeyplanCenter},')
-    print("}")
+        if "Title w/ Line" not in viewport_type:
+            viewport.SetBoxCenter(KeyplanCenter)
+            set_parameter(viewport, "Family and Type", ElementId(1942347))
+        # else:
+        #     viewport.SetBoxCenter(ViewportCenter)
+        #     viewport.LabelOffset = LabelOffset
+@transaction
+def start():
+    # active_view     
+    sheet_source = get_element(10811109)
+    # sheet_source = get_element(7633387) # Original
 
+
+    KeyplanCenter, PanelOrigin, ViewportCenter,LabelOffset = get(sheet_source) 
+    set(KeyplanCenter, PanelOrigin, ViewportCenter, LabelOffset)    
 
 if activate:
     start()
-OUT = output.getvalue()
+OUT = output.getvalue() 
+  
 
-
-# s ss s    s   s s  s
+# s ss s    s   s s  s     s 
+  

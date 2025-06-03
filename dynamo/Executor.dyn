@@ -17,7 +17,15 @@
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Generator - Sheet.py",
+      "Value": "..\\Generator - Working Key Plan.py",
+      "Description": "Allows you to select a file on the system and returns its file path"
+    },
+    {
+      "Id": "eb0486a0e98a4919a535f99f4aff108b",
+      "Name": "Main Python Script",
+      "Type": "string",
+      "Type2": "string",
+      "Value": "..\\Modifier - Attached Detail Group.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -25,15 +33,15 @@
     {
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
-      "Type": "string",
-      "InitialValue": "{'01 A-1C': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFEE0>,\n             'LabelLineLength': 0.21887060344815845,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFB50>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFF40>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FF670>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFAF0>},\n '01 A-2A': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509670>,\n             'LabelLineLength': 0.2349989506495962,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9190>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9C10>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C137C9A00>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9F40>},\n '01 A-2C': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9160>,\n             'LabelLineLength': 0.21397346476772294,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9C70>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9370>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C137C99A0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9F70>},\n '01 A-3D': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABBB0>,\n             'LabelLineLength': 0.21481996809965498,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB520>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABD90>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96ABBE0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABA30>},\n '01 A-3DR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725190>,\n              'LabelLineLength': 0.23809115453417462,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725910>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C117252B0>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C117255E0>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725460>},\n '01 A-3E': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF250>,\n             'LabelLineLength': 0.21665755412803112,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFB20>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFAC0>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FFC10>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF6A0>},\n '01 A-3J': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB1C0>,\n             'LabelLineLength': 0.21047307856555975,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB8B0>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB1F0>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB220>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB6A0>},\n '02 A-2B': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509790>,\n             'LabelLineLength': 0.21786873948242813,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F95090A0>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509850>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F95096D0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509040>},\n '02 A-2B.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF340>,\n               'LabelLineLength': 0.23653105320899526,\n               'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFCD0>,\n               'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFD60>,\n               'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FFD30>,\n               'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF430>},\n '02 A-2BR.3': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9340>,\n                'LabelLineLength': 0.26220143901879456,\n                'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9460>,\n                'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C92B0>,\n                'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C137C9D30>,\n                'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9DF0>},\n '02 A-2D': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB400>,\n             'LabelLineLength': 0.21596000496951318,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB280>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB9A0>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB040>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABB80>},\n '02 A-2D.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB4F0>,\n               'LabelLineLength': 0.23810900370201393,\n               'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABDF0>,\n               'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABB20>,\n               'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB610>,\n               'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABF10>},\n '02 A-2D.3': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFD90>,\n               'LabelLineLength': 0.24458756951414184,\n               'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFBB0>,\n               'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFEB0>,\n               'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FF550>,\n               'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF9A0>},\n '02 A-3C': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C117255B0>,\n             'LabelLineLength': 0.21516742067394068,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725880>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725670>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C11725850>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725610>},\n '03 A-2BR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509490>,\n              'LabelLineLength': 0.24141973744362755,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9FA0>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509430>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F95094F0>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F95094C0>},\n '03 A-2BR.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABFA0>,\n                'LabelLineLength': 0.2584334523364781,\n                'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB940>,\n                'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB160>,\n                'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB970>,\n                'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB880>},\n '03 A-2DR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB790>,\n              'LabelLineLength': 0.24072510130793712,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABE80>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB640>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB7F0>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB730>},\n '03 A-2DR.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABD60>,\n                'LabelLineLength': 0.2583578305346773,\n                'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABF70>,\n                'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB7C0>,\n                'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96ABB50>,\n                'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABEB0>},\n '04 A-2AR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9D60>,\n              'LabelLineLength': 0.23955170057537578,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9C40>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C95E0>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C137C9A90>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9310>},\n '04 A-3A': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABA90>,\n             'LabelLineLength': 0.21692212320945048,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB250>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB9D0>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96ABAF0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB2B0>},\n '04 A-3C': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725340>,\n             'LabelLineLength': 0.21767780199726028,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725820>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C117257F0>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C117258E0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725160>},\n '04 A-3H': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB190>,\n             'LabelLineLength': 0.21999406843333258,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB850>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB820>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96ABEE0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB700>},\n '05 A-1BR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F95093A0>,\n              'LabelLineLength': 0.23894245310877926,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509460>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509340>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F95093D0>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509400>},\n '05 A-2D': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB3D0>,\n             'LabelLineLength': 0.21584170225221277,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABA00>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABC10>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB580>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABD30>},\n '05 A-2D.2': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB5E0>,\n               'LabelLineLength': 0.2416009126796097,\n               'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABFD0>,\n               'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABE50>,\n               'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB070>,\n               'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABE20>},\n '05 A-3F': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB3A0>,\n             'LabelLineLength': 0.21562804911840905,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFFD0>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF970>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FFA90>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFC40>},\n '05 A-3G': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB910>,\n             'LabelLineLength': 0.21777257871066436,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABF40>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABCA0>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB550>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB340>},\n '06 A-1B': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F95090D0>,\n             'LabelLineLength': 0.21476646040821956,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509190>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509070>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F9509100>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509130>},\n '06 A-2B.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB2E0>,\n               'LabelLineLength': 0.23721388227762863,\n               'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABD00>,\n               'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB8E0>,\n               'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96ABDC0>,\n               'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABAC0>},\n '06 A-2BR.2': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725790>,\n                'LabelLineLength': 0.2580011269540492,\n                'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB490>,\n                'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABA60>,\n                'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB370>,\n                'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB760>},\n '06 A-2D.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB100>,\n               'LabelLineLength': 0.23782252965417228,\n               'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB130>,\n               'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB460>,\n               'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96AB5B0>,\n               'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABC40>},\n '06 A-2DR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C117254C0>,\n              'LabelLineLength': 0.23909939029187943,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C117258B0>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725400>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C11725310>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C11725730>},\n '06 A-3BR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB6D0>,\n              'LabelLineLength': 0.2384894631660115,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB310>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F96AB4C0>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F96ABC70>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F96ABCD0>},\n '07 A-2A': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F95091C0>,\n             'LabelLineLength': 0.21907151486279464,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509280>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509160>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F95091F0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509220>},\n '07 A-3B': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF580>,\n             'LabelLineLength': 0.21598623355138458,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFC70>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF940>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FF2E0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFFA0>},\n '08 A-2B': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509580>,\n             'LabelLineLength': 0.21588189909596445,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F95095B0>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509520>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F95095E0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509610>},\n '09 A-2AR.1': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9820>,\n                'LabelLineLength': 0.2577137042108557,\n                'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9E20>,\n                'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9850>,\n                'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C137C98E0>,\n                'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C137C9130>},\n '09 A-2BR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFE20>,\n              'LabelLineLength': 0.2381023741009245,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509880>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFE50>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F9509550>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFA00>},\n '10 A-2AR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFA30>,\n              'LabelLineLength': 0.23942577892339556,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF9D0>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FF460>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FFE80>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFDC0>},\n '11 A-1AR': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFDF0>,\n              'LabelLineLength': 0.23755364578786042,\n              'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFF70>,\n              'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFD00>,\n              'Type': <Autodesk.Revit.DB.ElementId object at 0x0000029C136FFF10>,\n              'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x0000029C136FFA60>},\n '12 A-1A': {'KeyplanCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F95092B0>,\n             'LabelLineLength': 0.22059013756967438,\n             'LabelOffset': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509370>,\n             'PanelOrigin': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509250>,\n             'Type': <Autodesk.Revit.DB.ElementId object at 0x00000297F95092E0>,\n             'ViewportCenter': <Autodesk.Revit.DB.XYZ object at 0x00000297F9509310>}}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "Type": "unknown",
+      "InitialValue": "",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 420.0,
+      "WatchWidth": 50.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -188,8 +196,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Generator - Sheet.py",
-      "InputValue": "..\\Generator - Sheet.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Generator - Working Key Plan.py",
+      "InputValue": "..\\Generator - Working Key Plan.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -370,6 +378,27 @@
       "Replication": "Disabled",
       "Description": "Enables selection between True and False",
       "InputValue": true
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.Filename, CoreNodeModels",
+      "Id": "eb0486a0e98a4919a535f99f4aff108b",
+      "NodeType": "ExtensionNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0cb39d236e3a48bfbe0e79f74512f373",
+          "Name": "",
+          "Description": "File Path",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows you to select a file on the system and returns its file path",
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - Attached Detail Group.py",
+      "InputValue": "..\\Modifier - Attached Detail Group.py"
     }
   ],
   "Connectors": [
@@ -389,12 +418,6 @@
       "Start": "54196530e0c946ad9c7f118cf291f7ee",
       "End": "61c2eb492efd45139d0f5b6f921fc71b",
       "Id": "0c4b5ed4c48c4e818c901bf005da1297",
-      "IsHidden": "False"
-    },
-    {
-      "Start": "f7aa77e77fd4463c964c07a1dd0655dd",
-      "End": "96c4524fcd3845b088cdb46e9cde4ff5",
-      "Id": "1193011948264c52822456b77e844035",
       "IsHidden": "False"
     },
     {
@@ -432,6 +455,12 @@
       "End": "5bade7cea32241219a3b6dd978dd0e03",
       "Id": "8ab7af1690014c7b876eeb891eddfc11",
       "IsHidden": "False"
+    },
+    {
+      "Start": "0cb39d236e3a48bfbe0e79f74512f373",
+      "End": "96c4524fcd3845b088cdb46e9cde4ff5",
+      "Id": "f51b29bfa2574a12a82cddb92dbea6ce",
+      "IsHidden": "False"
     }
   ],
   "Dependencies": [
@@ -455,10 +484,17 @@
       ]
     },
     {
-      "Name": "Generator - Sheet.py",
+      "Name": "Generator - Working Key Plan.py",
       "ReferenceType": "External",
       "Nodes": [
         "78aaa83004844e7ab1090747e0373c8a"
+      ]
+    },
+    {
+      "Name": "Modifier - Attached Detail Group.py",
+      "ReferenceType": "External",
+      "Nodes": [
+        "eb0486a0e98a4919a535f99f4aff108b"
       ]
     }
   ],
@@ -517,8 +553,8 @@
         "IsSetAsOutput": true,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 677.0066206666498,
-        "Y": 146.09911056187372
+        "X": 707.0752049460602,
+        "Y": 193.42291223334462
       },
       {
         "Id": "cdb6716dd2284b3eb7b48573c34cea0d",
@@ -527,8 +563,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 288.19286690360065,
-        "Y": -139.73562977222764
+        "X": 74.78913897813476,
+        "Y": -124.87840820779655
       },
       {
         "Id": "645837ec0e1245cfb0a61ae662e05a29",
@@ -537,8 +573,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 419.87620670187215,
-        "Y": 138.74766316625366
+        "X": 420.6848484791264,
+        "Y": 139.55630494350802
       },
       {
         "Id": "f401e2490b1a437faf6531c8c5bfec8a",
@@ -547,8 +583,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 655.8033275601578,
-        "Y": -188.93855229441192
+        "X": 298.342645837437,
+        "Y": -190.57159627495741
       },
       {
         "Id": "78aaa83004844e7ab1090747e0373c8a",
@@ -557,8 +593,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 434.35020187268964,
-        "Y": -309.7720644888982
+        "X": -300.31764173749957,
+        "Y": -323.6035160076232
       },
       {
         "Id": "5c26d691b1e8472297aa9408ee11d29f",
@@ -617,13 +653,23 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 354.23295283971333,
-        "Y": 399.43247128445773
+        "X": 338.97784865784104,
+        "Y": 404.5175060117484
+      },
+      {
+        "Id": "eb0486a0e98a4919a535f99f4aff108b",
+        "Name": "Main Python Script",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -349.89284794839836,
+        "Y": -184.62214984873134
       }
     ],
     "Annotations": [],
-    "X": -335.212738797105,
-    "Y": 521.1733417655827,
-    "Zoom": 1.301787980222417
+    "X": 216.2970970609441,
+    "Y": 171.56265904091444,
+    "Zoom": 0.8761350384291318
   }
 }

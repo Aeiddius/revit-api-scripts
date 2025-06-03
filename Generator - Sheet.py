@@ -152,10 +152,10 @@ def get_sheet_datas():
 
 @transaction
 def start():
-    TOWER = "A"
-    # target_type = "Unit Rough-Ins"
-    target_type = "Unit Device"
-    target_range = [2, 44]
+    TOWER = "B"
+    target_type = "Unit Rough-Ins"
+    # target_type = "Unit Device"
+    target_range = [1, 13]
 
     target_subgroup = "b. Tower A" if TOWER == "A" else "c. Tower B"
 

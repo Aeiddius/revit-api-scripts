@@ -68,6 +68,32 @@ target_range = [1, 43]
 @transaction      
 def start(): 
     # Get list of views
+
+    level_2 = get_element(6015693)
+    level_3 = get_element(6016527)
+
+    sub_views = level_2.GetDependentViewIds()
+    for sview_id in sub_views:
+        sview = get_element(sview_id)
+        if "RESI" in sview.Name: continue
+
+
+        print(sview.Name)
+
+        subnew_id = level_3.Duplicate(ViewDuplicateOption.AsDependent)
+        subview = get_element(subnew_id)
+        subview.CropBoxVisible = True
+        subview.CropBoxActive = True
+        subview.CropBox = sview.CropBox
+        subview_cropmanager = subview.GetCropRegionShapeManager()
+        subview_cropmanager.SetCropShape(sview.GetCropRegionShapeManager().GetCropShape()[0])
+        subview.Name = sview.Name.replace("02", "03", 1)
+        set_parameter(subview, "View Sub-Group", "")
+  
+
+
+
+    return
     device_views = get_view_range("2. Presentation Views",
                         "b. Tower A",
                         "Enlarged Device")

@@ -80,22 +80,27 @@ matrix = {
 
 def aligngrids(source_view, target_view):
     source_grids = collect_elements(source_view, [BuiltInCategory.OST_Grids])
-    crop_curve = target_view.GetCropRegionShapeManager().GetCropShape()[0]
+    # crop_curve = target_view.GetCropRegionShapeManager().GetCropShape()[0]
+    elemens = [i.Id for i in collect_elements(target_view, [BuiltInCategory.OST_Grids])]
 
     grid_dict = {}
     for i in source_grids:
         grid_dict[i.Id] = i
 
     for g_id in grid_dict:
+        if g_id not in elemens: continue
         grid = grid_dict[g_id]
+
 
         # Set bubbles
         for datum in [DatumEnds.End0, DatumEnds.End1]:
             bubble_seen = grid.IsBubbleVisibleInView(datum, source_view)
+ 
             if bubble_seen:
                 grid.ShowBubbleInView(datum, target_view)
             else:
                 grid.HideBubbleInView(datum, target_view)
+
 
         # Set Curve Length 
         srcCurve = grid.GetCurvesInView(
@@ -105,56 +110,55 @@ def aligngrids(source_view, target_view):
 
         p0 = srcCurve.GetEndPoint(0) 
         p1 = srcCurve.GetEndPoint(1)
-        
-        p0 = XYZ(p0.X, p0.Y-1100, p0.Z)  
-        p1 = XYZ(p1.X, p1.Y +1100, p1.Z)
- 
-        # print(p1)   
-        # print(p0)
+
         proj0 = trgCurve.Project(p0).XYZPoint
         proj1 = trgCurve.Project(p1).XYZPoint
 
         boundSeg = Line.CreateBound(proj0, proj1)
-        # for curve in crop_curve.GetCurveLoopIterator():
-        #     if grid.IsCurveValidInView(DatumExtentType.ViewSpecific, target_view, curve):
-        #         grid.SetCurveInView(DatumExtentType.ViewSpecific, target_view, curve)
-        #         print("Valid: ", curve)
-        #     else:
-        #         print("Not valid: ", curve)
-            
 
         grid.SetCurveInView(DatumExtentType.ViewSpecific,
                             target_view, boundSeg)
 
 def set_crop_region(source_view, target_view):
-    target_manager = target_view.GetCropRegionShapeManager()
-    source_manager = source_view.GetCropRegionShapeManager()
+    try:
+        target_manager = target_view.GetCropRegionShapeManager()
+        source_manager = source_view.GetCropRegionShapeManager()
+  
+        target_manager.SetCropShape(source_manager.GetCropShape()[0])
+        target_manager.LeftAnnotationCropOffset = source_manager.LeftAnnotationCropOffset
+        target_manager.RightAnnotationCropOffset = source_manager.RightAnnotationCropOffset
+        target_manager.TopAnnotationCropOffset = source_manager.TopAnnotationCropOffset
+        target_manager.BottomAnnotationCropOffset = source_manager.BottomAnnotationCropOffset
+    except:
+        print("FAILED CROP REGION", target_view.Name, "|", source_view.Name)
 
-    target_manager.SetCropShape(source_manager.GetCropShape()[0])
-    target_manager.LeftAnnotationCropOffset = source_manager.LeftAnnotationCropOffset
-    target_manager.RightAnnotationCropOffset = source_manager.RightAnnotationCropOffset
-    target_manager.TopAnnotationCropOffset = source_manager.TopAnnotationCropOffset
-    target_manager.BottomAnnotationCropOffset = source_manager.BottomAnnotationCropOffset
 
 def set_view_range(source_view, target_view):
-    target_view.SetViewRange(source_view.GetViewRange())
+    source_vr = source_view.GetViewRange()
+    try:
+        target_view.SetViewRange(source_vr)
+    except:
+        print("FAILED VIEW RANGE: ", target_view.Name, "|", source_view.Name)
 
-@transaction
+ 
+@transaction 
+ 
 def start():
-    TOWER = "A"
+    TOWER = "B"
     views = get_view_range("2. Presentation Views",
-                           "b. Tower A", "Unit Rough-Ins", dependent_only=True)
+                           "c. Tower B", "Unit Lighting", dependent_only=True)
     working_views = get_view_range("1. Working Views",
-                                   "b. Tower A", "Unit Rough-Ins", dependent_only=True)
+                                   "c. Tower B", "Unit Rough-Ins", dependent_only=True)
     w_views_dict = {}
     for w_view in working_views:
         name = w_view.Name.split("(")[1].replace(")", "").strip()
         w_views_dict[name] = w_view
 
     for view in views:
-        if view.Name != "UNIT 0202 A-2BR.3-RI": continue
+        if "BL-" in view.Name: continue
         unit = UnitView(view)
-        m_unit = ""
+        # if unit.level == 2: continue
+        # if view.Name != "UNIT 0803 BPR-2BR-L": continue
         m_unit_key = ""
         if unit.matrix_format not in matrix[TOWER]:
             for i in matrix[TOWER]:
@@ -165,18 +169,22 @@ def start():
                 x = matrix[TOWER][i].pos[unit.level]
                 test_name = f"{x} {unit.unit_type}"
                 if test_name == unit.matrix_format:
-                    m_unit = matrix[TOWER][i]
                     m_unit_key = i
-                    break
+                    break 
         else:
-            m_unit = matrix[TOWER][unit.matrix_format]
             m_unit_key = unit.matrix_format
-        print(m_unit_key, view.Name)
 
+        # try:
+        print(view.Name, "|", unit.unit_type)
         source_view = w_views_dict[m_unit_key]
         aligngrids(source_view, view)
-        set_crop_region(source_view, view)
+        set_crop_region(source_view, view) 
         set_view_range(source_view, view)
+        # except:
+        #     print(view.Name, "|", unit.unit_type)
+
+    # pprint(w_views_dict)  
+
 if activate:
     start()
 OUT = output.getvalue()

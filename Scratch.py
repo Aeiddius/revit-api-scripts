@@ -1,12 +1,13 @@
 # Import
 from System.Linq import Enumerable
+import System
 import clr
 import sys
 from io import StringIO
 from collections.abc import Callable
 
 from Autodesk.Revit.DB import *
-from Autodesk.Revit.DB import ElementId, BuiltInParameter, SectionType, ViewPlan, FilledRegion, CurveLoop, FilteredElementCollector
+from Autodesk.Revit.DB import ElementId, PlanViewPlane, SectionType, ViewPlan, FilledRegion, CurveLoop, FilteredElementCollector
 from Autodesk.Revit.DB.Electrical import PanelScheduleView, ElectricalSystem
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
@@ -77,14 +78,43 @@ a3_double_pole = [[14, 1]]
 @transaction
 def start():
 
+    views = get_view_range("2. Presentation Views", "c. Tower B", "Unit Device")
+    for view in views:
+        enums = [
+            PlanViewPlane.BottomClipPlane,
+            PlanViewPlane.CutPlane,
+            PlanViewPlane.TopClipPlane,
+            PlanViewPlane.UnderlayBottom,
+            PlanViewPlane.ViewDepthPlane,
+        ]
+
+
+
+        try:
+            source_vr = view.GetViewRange()
+
+            for plane in enums:
+        
+        
+                s_level_id = source_vr.GetLevelId(plane)
+
+                if int(s_level_id.ToString()) < 0: continue
+
+                source_vr.SetLevelId(plane, view.GenLevel.Id)
+    
+            view.SetViewRange(source_vr)
+        except:
+            print(view.Name)
+
+
     # original = get_element(10549621)
     # target = get_element(10549868)
 
     # target.Origin = original.Origin
 
     # return
-    placed_view = get_element(10551907)
-    placed_view.SetBoxCenter(XYZ(0.765528942, 1.779766219, -0.222395833))
+    # placed_view = get_element(10551907)
+    # placed_view.SetBoxCenter(XYZ(0.765528942, 1.779766219, -0.222395833))
     # Horiontal
     # placed_view.SetBoxCenter(XYZ(0.727590417, 0.186369829, -0.241145833))
 

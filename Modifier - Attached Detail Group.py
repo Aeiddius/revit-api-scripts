@@ -53,17 +53,19 @@ for script in IN[0]: # type: ignore
 matrix_a: dict[str, any] = locals().get("matrix_a")
 matrix_b: dict[str, any] = locals().get("matrix_b")
 print_member: Callable[[any], None] = globals().get("print_member")
-get_element  = globals().get("get_element")
+get_element = globals().get("get_element")
 get_elements = globals().get("get_elements")
 get_element_via_parameter = globals().get("get_element_via_parameter")
 get_view_range = globals().get("get_view_range")
 get_num: Callable[[str], int] = globals().get("get_num")
 get_parameter: Callable[[Element, str], str] = globals().get("get_parameter")
-set_parameter: Callable[[Element, str, any], bool] = globals().get("set_parameter")
+set_parameter: Callable[[Element, str, any],
+                        bool] = globals().get("set_parameter")
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
 collect_elements = globals().get("collect_elements")
-
+UnitView = locals().get("UnitView")
+get_unit_key = locals().get("get_unit_key")
 #==== Template ends here ====# 
 
 # This script is intended to generate unit sheet views
@@ -77,109 +79,92 @@ matrix = {
 }
 
 
-def get_dependent_views(target_group, target_subgroup, target_type):
-    views: List[ViewPlan] = get_view_range(target_group, target_subgroup, target_type)
-    units = {}
-    for view in views:
-        dependent_ids = view.GetDependentViewIds()
-        if not dependent_ids: continue
-        num = get_num(view.Name)
-        units[num] = dependent_ids
-    return units
- 
-def viewname_get_unit_type(view_name):
-    if "ADA" in view_name:
-        x = " ".join(view_name.replace("ADA", "").split(" ")[2:3])
-        return x + " ADA"
-    return view_name.split(" ")[-1].rsplit("-", 1)[0]
+def get_detail_orientation(unit, TOWER: str):
 
-def get_unit_type(view_name,TOWER):
-    view_unit_name = view_name.split(" ", 1)[-1].rsplit('-', 1)[0][2:].strip()
-    print("?>???>>  ", view_unit_name)
-    set_type = "x"
+    # 01 A-2B
     for unit_name in matrix[TOWER]:
-        # print(unit_name)
-        unit = matrix[TOWER][unit_name]
         
-        if unit_name in view_unit_name:
-            set_type = unit.ortn
-            print("TYPE: ", unit_name)
-            return set_type
-        elif unit.pos:
-            for lvl in unit.pos:
-                unit_name_2 = unit.pos[lvl] + " " + unit_name.split(" ")[1]
-                if unit_name_2 in view_unit_name:
-                    set_type = unit.ortn
-                    return set_type
-    if set_type == "x":
-        print("NO UNIT FOR: ", view_unit_name)
-        raise Exception(f"No type for view [{view_name}] set in matrix") 
+        # Get matrix unit
+        matrix_unit = matrix[TOWER][unit_name]
+        
+        # Check if unit is equal to the view name
+        if unit_name in unit.matrix_format:
+            return matrix_unit.ortn
+        
+        # If it has unit pos
+        if not matrix_unit.pos: continue
+        for lvl in matrix_unit.pos:
+            if f"{matrix_unit.pos[lvl]} {unit.unit_type}" in unit.matrix_format:
+                return matrix_unit.ortn
+ 
+    raise Exception(f"No type for view [{unit.view_name}] set in matrix") 
 
+def show_detail(group: Group, primary_view: ViewPlan, detail_type: str):
+    # get attached list
+    attached_detail = list(group.GetAvailableAttachedDetailGroupTypeIds())
+
+    # If only one detail attachment, use it
+    if len(attached_detail) == 1:
+        group.ShowAttachedDetailGroups(primary_view, attached_detail[0])
+        return
+
+    attached: bool = False
+    for detail in [get_element(i) for i in attached_detail]:
+        detail_name = get_parameter(detail, "Type Name")
+
+        if set_type in detail_name:
+            with Transact():
+                group.ShowAttachedDetailGroups(primary_view, detail.Id)
+                attached = True
+                continue 
+
+        # Disposal
+        detail_elem.Dispose() 
+        del detail_name
+    if not attached:
+        raise Exception(f"No detail attached to {group.Name}")
 
 # Body  
 @transaction      
 def start(): 
+    TOWER = "B"
     target_group = "2. Presentation Views"
-    target_subgroup = "b. Tower A"
-    target_type = "Enlarged Rough-Ins"
+    target_type = "Unit Rough-Ins"
+    target_subgroup =  "b. Tower A" if TOWER == "A" else "c. Tower B" 
     
-    target_units = get_dependent_views(target_group, target_subgroup, target_type)
-    for lvl in target_units:
-        # if lvl in [40]: continue
-        if lvl != 40: continue 
-        primary_view = ""   
-        print(lvl)
-        # Unit
-        for view_id in target_units[lvl]:
-            unit_view = get_element(view_id)
-            print(unit_view.Name)
-            unit_type = viewname_get_unit_type(unit_view.Name)
-            unit_Type_1 = f"(Type {unit_type})" 
+    target_units = get_view_range(target_group, target_subgroup, target_type)
 
-            # Check if primary id added
-            if not primary_view:
-                primary_view = get_element(unit_view.GetPrimaryViewId())
-            groups = collect_elements(unit_view, [BuiltInCategory.OST_IOSModelGroups])
-            
-            set_type = get_unit_type(unit_view.Name, "A")
-            print(" Set: ", set_type)
-            print("\n\n")
-            # Groups inside view
-            # continue
+    # Unit
+    for level_view in target_units:
+        dependent_views = level_view.GetDependentViewIds()
+        lvl = get_num(level_view.GenLevel.Name)
+        if lvl != 5: continue
+
+        # Iterate through dependent views
+        for view_id in dependent_views:
+            view = get_element(view_id)
+            if "BL-" in view.Name: continue
+            print(view.Name)
+            # Name data
+            unit = UnitView(view)
+
+            # Collect Groups
+            groups = collect_elements(view, [BuiltInCategory.OST_IOSModelGroups])
+            detail_type = get_detail_orientation(unit, TOWER)
+   
+            # Check Groups
             for group in groups:
+                # Guard Check
                 reference_level = get_num(get_parameter(group, "Reference Level"))
                 if reference_level != lvl: continue
-                if unit_Type_1 not in group.Name: continue
-                ids = list(group.GetShownAttachedDetailGroupTypeIds(primary_view))
+                if unit.unit_type not in group.Name: continue
+                ids = list(group.GetShownAttachedDetailGroupTypeIds(level_view))
                 if ids: continue
-
-                attached_detail = list(group.GetAvailableAttachedDetailGroupTypeIds())
-                if len(attached_detail) == 1:
-                    group.ShowAttachedDetailGroups(primary_view, attached_detail[0])
-                    continue
-                else: 
-                    attached = False
-                    for detail in attached_detail:
-                        detail_elem = get_element(detail)
-                        detail_name = get_parameter(detail_elem, "Type Name")
-
-                        if set_type in detail_name:
-                            with Transact():
-                                group.ShowAttachedDetailGroups(primary_view, detail_elem.Id)
-                                attached = True
-                                continue 
-
-                        # Disposal
-                        detail_elem.Dispose() 
-                        del detail_name
-                    if not attached:
-                        raise Exception(f"No detail attached to {group.Name}")
-                    
+                print(group.Name)
+                # show_detail(group, level_view, detail_type)
                 # group.ShowAttachedDetailGroups(primary_view, ElementId)
-                # break    
-            print("\n")
-            # break
-        print("=====================\n\n")
+
+            break # dependent_view iteration
  
 if activate:     
     start()    

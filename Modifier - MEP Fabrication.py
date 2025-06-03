@@ -3,11 +3,13 @@ import clr
 import sys
 from io import StringIO
 from collections.abc import Callable
+from pprint import pprint
 
 from Autodesk.Revit.DB import *
-from Autodesk.Revit.DB import ElementId, UV, ViewPlan, \
-    Element, CurveArray, SketchPlane, XYZ, \
-    FilteredElementCollector, BuiltInCategory
+from Autodesk.Revit.DB import ElementId, ViewSheet, ViewPlan, \
+    Element, Viewport, BuiltInCategory, XYZ, \
+    DatumExtentType, DatumEnds
+from Autodesk.Revit.DB.Electrical import PanelScheduleView, PanelScheduleSheetInstance
 
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
@@ -43,7 +45,8 @@ for script in IN[0]:  # type: ignore
     exec(script)
 
 # Functions and matrix definition
-matrix: dict[str, any] = locals().get("matrix_a")
+matrix_a: dict[str, any] = locals().get("matrix_a")
+matrix_b: dict[str, any] = locals().get("matrix_b")
 print_member: Callable[[any], None] = globals().get("print_member")
 get_element = globals().get("get_element")
 get_elements = globals().get("get_elements")
@@ -54,6 +57,9 @@ get_parameter: Callable[[Element, str], str] = globals().get("get_parameter")
 set_parameter: Callable[[Element, str, any],
                         bool] = globals().get("set_parameter")
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
+is_category_this = globals().get("is_category_this")
+collect_elements = globals().get("collect_elements")
+UnitView = locals().get("UnitView")
 
 # ==== Template ends here ====#
 
@@ -61,35 +67,30 @@ is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 
 
 # Parameters
-target_range = [1, 2]
+# Parameters
+matrix = {
+    "A": matrix_a,
+    "B": matrix_b
+}
+
+# Functions
 
 
 # Body
+
 @transaction
 def start():
- 
-    # sheet_list: list[ViewPlan] = FilteredElementCollector(
-    #     doc).OfClass(ViewSheet).ToElements()
-    # sheet_dict = {}
-    # for sheet in sheet_list:
-    #     if get_parameter(sheet, "Sheet Collection") != "0. Working Sheet": continue
-    #     if get_parameter(sheet, "Sheet Group") != "Unit Plan A": continue
-    #     number = sheet.SheetNumber.replace("WV", "WA").strip()
-    #     sheet.SheetNumber = number
-    #     # set_parameter(sheet, "Sheet Sub-Group", subgroup) 
+    source = get_element(10744586)
+    target = get_element(10744598)
 
-    views = get_view_range("3. Utility Views",
-                           "a. Key Plan",
-                           "Key Plan B",
-                           [1, 13],
-                           dependent_only=True)
- 
-    for view in views:
-        if "BRP" not in view.Name: continue
-        view.Name = view.Name.replace("BRP", "BPR")
-        # view.CropBoxVisible = False
-        print(view.Name)
+    x = source.ConnectorManager
+    y = x.Connectors
+    for i in y:
+        b = i.GasketLength
+        i.GasketLength = 0.0
+        print(b)
 
 if activate:
     start()
 OUT = output.getvalue()
+#  s s s  s a s s

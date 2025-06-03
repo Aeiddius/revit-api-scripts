@@ -68,7 +68,8 @@ set_parameter: Callable[[Element, str, any],
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
 collect_elements = globals().get("collect_elements")
-
+UnitView = locals().get("UnitView")
+get_unit_key = locals().get("get_unit_key")
 # ==== Template ends here ====#
 
 # This script is intended to generate unit sheet views

@@ -205,11 +205,12 @@ class UnitView:
 
     def __init__(self, view: ViewPlan):
         self.view = view
+        self.view_name = view.Name
         self.level: int = 0  # ex. 2
         self.level_str: str = ""  # ex. 02
         self.unit_no: str = ""  # 0201
         self.unit_pos: str = ""  # 01
-        self.unit_type: str = ""    # ex. A-2B
+        self.unit_type: str = ""    # A-2BR
         self.view_type: str = ""  # RI/L/D
         self.view_type_full: str = ""  # ex. Lighting/Rough-Ins/Device
 
@@ -223,7 +224,7 @@ class UnitView:
         # view.Name = UNIT 0203 A-2AR-L
 
         # ["0203", "A-2AR-L"]
-        x = self.view.Name.replace("UNIT ", "").split(" ")
+        x = self.view.Name.replace("UNIT ", "").split(" ", 1)
         self.unit_no = x[0].strip()  # "0203"
 
         # ["A-2AR", "L"]
@@ -236,6 +237,7 @@ class UnitView:
         self.unit_pos = self.unit_no[2:].strip()
         self.level = int(self.unit_no[:2])
         self.level_str = self.unit_no[:2].strip()
+        self.lvl = self.level
 
         # "01 A-2B"
         self.matrix_format = f"{self.unit_pos} {self.unit_type}"
@@ -251,3 +253,25 @@ class UnitView:
         print("  Unit View Type: ", self.view_type)
         print("  Unit Group Format: ", self.group_format)
         print("  Unit Matrix Format: ", self.matrix_format)
+
+
+def get_unit_key(unit: UnitView, TOWER: str):
+    # returns 02 A2-BR
+    global matrix
+    if unit.matrix_format not in matrix[TOWER]:
+        for i in matrix[TOWER]:
+            if unit.unit_type not in i:
+                continue
+            if unit.level not in matrix[TOWER][i].pos:
+                continue
+            x = matrix[TOWER][i].pos[unit.level]
+            test_name = f"{x} {unit.unit_type}"
+            if test_name == unit.matrix_format:
+                # print("true!", i, unit.matrix_format)
+                m_unit = matrix[TOWER][i]
+                m_unit_key = i
+                return i
+    else:
+        m_unit = matrix[TOWER][unit.matrix_format]
+        m_unit_key = unit.matrix_format
+        return m_unit_key
