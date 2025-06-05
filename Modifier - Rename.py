@@ -62,33 +62,23 @@ is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 
 # Parameters
 target_range = [1, 2]
-
+def capitalize_words(s):
+    return ' '.join(word.capitalize() for word in s.split())
 
 # Body
 @transaction
 def start():
  
-    # sheet_list: list[ViewPlan] = FilteredElementCollector(
-    #     doc).OfClass(ViewSheet).ToElements()
-    # sheet_dict = {}
-    # for sheet in sheet_list:
-    #     if get_parameter(sheet, "Sheet Collection") != "0. Working Sheet": continue
-    #     if get_parameter(sheet, "Sheet Group") != "Unit Plan A": continue
-    #     number = sheet.SheetNumber.replace("WV", "WA").strip()
-    #     sheet.SheetNumber = number
-    #     # set_parameter(sheet, "Sheet Sub-Group", subgroup) 
 
-    views = get_view_range("3. Utility Views",
-                           "a. Key Plan",
-                           "Key Plan B",
-                           [1, 13],
-                           dependent_only=True)
+
+    views = get_view_range("2. Presentation Views",
+                           "a. Block C",
+                           "Underground",
+                           dependent_only=False)
  
     for view in views:
-        if "BRP" not in view.Name: continue
-        view.Name = view.Name.replace("BRP", "BPR")
-        # view.CropBoxVisible = False
-        print(view.Name)
+       
+        view.Name = view.Name.replace("LEVEL ", "Level ")
 
 if activate:
     start()

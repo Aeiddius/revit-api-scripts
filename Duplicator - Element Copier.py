@@ -221,9 +221,11 @@ def get_dependent_views(target_group:str, target_subgroup: str):
     return units
   
 def start():
+    # Parameters
     TARGET_LEVEL = 40
     TOWER = "A" 
     TARGET_UNIT = "W_Device Unit 40 (05 A-2D)"
+    
     # Source views
     source_units = get_dependent_views("1. Working Views", "b. Tower A")
 

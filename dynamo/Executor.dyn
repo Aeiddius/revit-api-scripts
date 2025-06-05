@@ -33,15 +33,15 @@
     {
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
-      "Type": "unknown",
-      "InitialValue": "",
+      "Type": "string",
+      "InitialValue": "UNIT 0501 BPR-1C-RI\nPower (Type BPR-1C)\n",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 50.0,
+      "WatchWidth": 320.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -482,20 +482,6 @@
       "Nodes": [
         "6d0c6df792374be6a94ca1b942f27f1f"
       ]
-    },
-    {
-      "Name": "Generator - Working Key Plan.py",
-      "ReferenceType": "External",
-      "Nodes": [
-        "78aaa83004844e7ab1090747e0373c8a"
-      ]
-    },
-    {
-      "Name": "Modifier - Attached Detail Group.py",
-      "ReferenceType": "External",
-      "Nodes": [
-        "eb0486a0e98a4919a535f99f4aff108b"
-      ]
     }
   ],
   "EnableLegacyPolyCurveBehavior": true,
@@ -663,13 +649,13 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": -349.89284794839836,
-        "Y": -184.62214984873134
+        "X": 835.7775180177919,
+        "Y": 17.243450619093608
       }
     ],
     "Annotations": [],
-    "X": 216.2970970609441,
-    "Y": 171.56265904091444,
-    "Zoom": 0.8761350384291318
+    "X": -578.4103400715222,
+    "Y": 51.03003520439063,
+    "Zoom": 1.2104712316781487
   }
 }
