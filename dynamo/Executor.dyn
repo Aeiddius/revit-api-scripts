@@ -13,19 +13,11 @@
   },
   "Inputs": [
     {
-      "Id": "78aaa83004844e7ab1090747e0373c8a",
-      "Name": "Main Python Script",
-      "Type": "string",
-      "Type2": "string",
-      "Value": "..\\Generator - Working Key Plan.py",
-      "Description": "Allows you to select a file on the system and returns its file path"
-    },
-    {
       "Id": "eb0486a0e98a4919a535f99f4aff108b",
       "Name": "Main Python Script",
       "Type": "string",
       "Type2": "string",
-      "Value": "..\\Modifier - Attached Detail Group.py",
+      "Value": "..\\Duplicator - Element Copier.py",
       "Description": "Allows you to select a file on the system and returns its file path"
     }
   ],
@@ -34,14 +26,14 @@
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "Name": "Watch",
       "Type": "string",
-      "InitialValue": "UNIT 0501 BPR-1C-RI\nPower (Type BPR-1C)\n",
+      "InitialValue": "sadsd:  1\nsadsd:  4\nUNIT 0402 BPR-2C ADA-RI 02 BPR-2C ADA\nsadsd:  5\nsadsd:  6\nsadsd:  7\nsadsd:  8\nsadsd:  9\nsadsd:  10\nsadsd:  11\n",
       "Description": "Visualizes a node's output"
     }
   ],
   "Nodes": [
     {
       "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
-      "WatchWidth": 320.0,
+      "WatchWidth": 420.0,
       "WatchHeight": 200.0,
       "Id": "140d21c884274efcbbb435136f5b32e1",
       "NodeType": "ExtensionNode",
@@ -177,27 +169,6 @@
       "FunctionSignature": "DSCore.IO.FileSystem.ReadText@var",
       "Replication": "Auto",
       "Description": "Reads a text file and returns the contents as a string.\n\nFileSystem.ReadText (file: var): string"
-    },
-    {
-      "ConcreteType": "CoreNodeModels.Input.Filename, CoreNodeModels",
-      "Id": "78aaa83004844e7ab1090747e0373c8a",
-      "NodeType": "ExtensionNode",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "f7aa77e77fd4463c964c07a1dd0655dd",
-          "Name": "",
-          "Description": "File Path",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Generator - Working Key Plan.py",
-      "InputValue": "..\\Generator - Working Key Plan.py"
     },
     {
       "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
@@ -397,8 +368,8 @@
       ],
       "Replication": "Disabled",
       "Description": "Allows you to select a file on the system and returns its file path",
-      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Modifier - Attached Detail Group.py",
-      "InputValue": "..\\Modifier - Attached Detail Group.py"
+      "HintPath": "C:\\Users\\Public\\Documents\\PRIME-IAN\\Script\\Duplicator - Element Copier.py",
+      "InputValue": "..\\Duplicator - Element Copier.py"
     }
   ],
   "Connectors": [
@@ -482,6 +453,13 @@
       "Nodes": [
         "6d0c6df792374be6a94ca1b942f27f1f"
       ]
+    },
+    {
+      "Name": "Duplicator - Element Copier.py",
+      "ReferenceType": "External",
+      "Nodes": [
+        "eb0486a0e98a4919a535f99f4aff108b"
+      ]
     }
   ],
   "EnableLegacyPolyCurveBehavior": true,
@@ -549,8 +527,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 74.78913897813476,
-        "Y": -124.87840820779655
+        "X": 181.96696313706008,
+        "Y": -130.32812808028427
       },
       {
         "Id": "645837ec0e1245cfb0a61ae662e05a29",
@@ -569,18 +547,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 298.342645837437,
-        "Y": -190.57159627495741
-      },
-      {
-        "Id": "78aaa83004844e7ab1090747e0373c8a",
-        "Name": "Main Python Script",
-        "IsSetAsInput": true,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "ShowGeometry": true,
-        "X": -300.31764173749957,
-        "Y": -323.6035160076232
+        "X": 476.36682833870265,
+        "Y": -148.79041058588484
       },
       {
         "Id": "5c26d691b1e8472297aa9408ee11d29f",
@@ -639,8 +607,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 338.97784865784104,
-        "Y": 404.5175060117484
+        "X": 339.7890641840545,
+        "Y": 403.7062904855349
       },
       {
         "Id": "eb0486a0e98a4919a535f99f4aff108b",
@@ -649,13 +617,13 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 835.7775180177919,
-        "Y": 17.243450619093608
+        "X": -268.69904280638735,
+        "Y": -155.33101200968434
       }
     ],
     "Annotations": [],
-    "X": -578.4103400715222,
-    "Y": 51.03003520439063,
-    "Zoom": 1.2104712316781487
+    "X": 417.3519008329282,
+    "Y": 229.49115990930156,
+    "Zoom": 0.6191022472061863
   }
 }

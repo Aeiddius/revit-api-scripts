@@ -254,6 +254,15 @@ class UnitView:
         print("  Unit Group Format: ", self.group_format)
         print("  Unit Matrix Format: ", self.matrix_format)
 
+def __str__(self):
+        return f"View Name: {self.view.Name}" + \
+        f"Level: {self.level_str}" + \
+        f"Unit no.: {self.unit_no}" + \
+        f"Unit pos.: {self.unit_pos}" + \
+        f"Unit Type: {self.unit_type}" + \
+        f"Unit View Type: {self.view_type}" + \
+        f"Unit Group Format: {self.group_format}" + \
+        f"Unit Matrix Format: {self.matrix_format}"
 
 def get_unit_key(unit: UnitView, TOWER: str):
     # returns 02 A2-BR

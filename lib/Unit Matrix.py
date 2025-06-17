@@ -149,7 +149,7 @@ matrix_b = {
     "05 BPR-2BR": UnitDetail(2, 9, {}, [], ortn="Unit"),
     "06 BPR-2B": UnitDetail(2, 9, {}, [], ortn="Unit"),
     "07 BPR-2BR": UnitDetail(2, 9, {}, [], ortn="Unit"),
-    "08 BPR-2B": UnitDetail(2, 2, {}, [], ortn="Unit"),
+    "08 BPR-2B": UnitDetail(2, 9, {}, [], ortn="Unit"),
     "09 OFFICE": UnitDetail(2, 2, {}, [], ortn="Unit"),
     "10 BPR-3B": UnitDetail(2, 8, {}, [], ortn="Unit"),
     "11 BPR-2D": UnitDetail(2, 8, {}, [], ortn="Unit"),
@@ -161,7 +161,7 @@ matrix_b = {
     "13 BPR-2A": UnitDetail(3, 9, {}, [], ortn="Unit"),
     "14 BPR-1A": UnitDetail(3, 9, {}, [], ortn="Unit"),
     "15 BPR-3A": UnitDetail(3, 9, {}, [], ortn="Unit"),
-    "16 BPR-1B ADA": UnitDetail(3, 3, {}, [], ortn="Unit"),
+    "16 BPR-1B ADA": UnitDetail(3, 4, {}, [], ortn="Unit"),
 
     # Level 5B-8B
     "02 BPR-2C": UnitDetail(5, 9, {}, [], ortn="Unit"),

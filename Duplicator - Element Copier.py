@@ -62,7 +62,9 @@ get_parameter: Callable[[Element, str], str] = globals().get("get_parameter")
 set_parameter: Callable[[Element, str, any], bool] = globals().get("set_parameter")
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
 is_category_this = globals().get("is_category_this")
-
+collect_elements = globals().get("collect_elements")
+UnitView = locals().get("UnitView")
+get_unit_key = locals().get("get_unit_key")
 #==== Template ends here ====# 
 
 
@@ -176,30 +178,6 @@ panel_spares = {
 }
 
  
-def viewname_get_unit_type(view_name):
-    return view_name.split(" ")[-1].rsplit("-", 1)[0]
-        
-  
- 
-def get_unit_type(view_name,TOWER):
-    view_unit_name = view_name.split(" ", 1)[-1].rsplit('-', 1)[0][2:].strip()
-    set_type = "x"
-    for unit_name in matrix[TOWER]:
-        # print(unit_name)
-        unit = matrix[TOWER][unit_name]
-        if unit_name in view_unit_name:
-            set_type = unit.ortn
-        elif unit.pos:
-            for lvl in unit.pos:
-                unit_name_2 = unit.pos[lvl] + " " + unit_name.split(" ")[1]
-                if unit_name_2 in view_unit_name:
-                    set_type = unit.ortn
-                    return set_type
-    if set_type == "x":
-        print("NO UNIT FOR: ", view_unit_name)
-        # raise Exception(f"No type for view [{view_name}] set in matrix") 
-    return set_type
- 
 @transaction
 def copy_elements(base_view, target_view, elements_filtered):
     copied_ids = ElementTransformUtils.CopyElements(
@@ -221,47 +199,47 @@ def get_dependent_views(target_group:str, target_subgroup: str):
     return units
   
 def start():
-    # Parameters
-    TARGET_LEVEL = 40
-    TOWER = "A" 
-    TARGET_UNIT = "W_Device Unit 40 (05 A-2D)"
-    
-    # Source views
-    source_units = get_dependent_views("1. Working Views", "b. Tower A")
+    # Parameters  
+    TARGET_LEVEL = 3
+    TOWER = "B" 
+    TARGET_UNIT = "W_Unit 03 (02 BPR-2C ADA)"
+    # Source views 
+    source_units = get_dependent_views("1. Working Views", "c. Tower B")
 
     # Target views
-    target_units = get_dependent_views("2. Presentation Views", "b. Tower A")
-
+    target_units = get_dependent_views("2. Presentation Views", "c. Tower B")
  
+
     # Iterate through base view of each level source views based on working views
     for sview_id in source_units[TARGET_LEVEL]:
   
         base_view = get_element(sview_id)
         if base_view.Name != TARGET_UNIT: continue
 
+
         unit_name = re.search(r"\((.*?)\)", base_view.Name).group(1)
-        unit = matrix_a[unit_name]
-        level = get_num(base_view.GenLevel.Name)
+        m_unit = matrix_b[unit_name]
  
         # Iterate through target units from presentation views based on level
         for tview_lvl in target_units:
-            if tview_lvl in unit.exclude: continue
-            # Skip if same level as target view
-            if tview_lvl == level: continue
-            # Skip if not level range
-            if not (unit.min <= tview_lvl <= unit.max): continue
-
+            # Checks
+            if tview_lvl != 2: continue
+            if tview_lvl in m_unit.exclude: continue
+            if tview_lvl == TARGET_LEVEL: continue # Skip if same level as target view
+            print("sadsd: ", tview_lvl)
+            if not (m_unit.min <= tview_lvl <= m_unit.max): continue # Skip if not level range
+            
             # Rename position dependent
             unit_name_2 = unit_name
-            if tview_lvl in unit.pos:
-                unit_name_2 = unit.pos[tview_lvl] + " " + unit_name.split(" ")[1]
+            if tview_lvl in m_unit.pos:
+                unit_name_2 = m_unit.pos[tview_lvl] + " " + unit_name.split(" ")[1]
 
             # Iterate through dependent views of each target_unit level view
             for tview_id in target_units[tview_lvl]:
                 target_view = get_element(tview_id)
                 if unit_name_2 not in target_view.Name: continue
-
-                # print(f"{base_view.Name} - {unit_name_2} - {target_view.Name}")
+                print(target_view.Name, unit_name_2)
+     
                 place_unit(base_view, target_view, TOWER)
                 target_view.Dispose()
                 # return
@@ -271,24 +249,24 @@ def start():
 def custom_place_tower_b():
     source = get_dependent_views("2. Presentation Views", "c. Tower B")
 
-    level_8 = source[8] 
-    level_9 = source[9]
+    source_level = source[3] 
+    target_level = source[4]
 
     source_views = {}
     unit_views = {}
 
-    for sid in level_8:
+    for sid in source_level:
         base_view = get_element(sid)
         unit_name = base_view.Name.replace("UNIT ", "")[2:].rsplit("-", 1)[0]
         source_views[unit_name] = base_view
 
 
-    for tid in level_9:
+    for tid in target_level:
         base_view = get_element(tid)
         unit_name = base_view.Name.replace("UNIT ", "")[2:].rsplit("-", 1)[0]
         unit_views[unit_name] = base_view
     done = [] 
-    target_shit = "08 BPR-2B"
+    target_shit = "01 BPR-1C"
     # target_shit = "13 BPR-2A"
     for base_name in source_views:
 
@@ -314,7 +292,7 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
     # base_view = get_element(3830970)
     # target_view = get_element(5693191)
 
-    set_type = get_unit_type(target_view.Name, TOWER)
+    # set_type = get_unit_type(target_view.Name, TOWER)
     element_collector = FilteredElementCollector(doc, base_view.Id)
     elements_filtered = []
     element_tags = []  
@@ -328,7 +306,7 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
             element_tags.append(e)
             continue
         elements_filtered.append(e)
-     
+
     # Copy elements
     copied_ids = []
     with Transact():
@@ -346,33 +324,37 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
     del include_categories
     # disposal
 
+
+
     for id in copied_ids:
         elem = get_element(id)
 
         # Groups
         if is_category_this(elem, BuiltInCategory.OST_IOSModelGroups):
-            # Set detail groups
-            attached_detail = elem.GetAvailableAttachedDetailGroupTypeIds()
-            attached_detail_list = list(attached_detail)
-            if len(attached_detail) == 1:
-                with Transact():
-                    elem.ShowAttachedDetailGroups(target_view, attached_detail_list[0])
-            else:
-                attached = False
-                for detail in attached_detail_list:
-                    detail_elem = get_element(detail)
-                    detail_name = get_parameter(detail_elem, "Type Name")
+            # if "RCP" in elem.Name or "Fire" in elem.Name:
+            #     set_parameter(elem, "Origin Level Offset", "-0'  9\"") 
+            # # Set detail groups
+            # attached_detail = elem.GetAvailableAttachedDetailGroupTypeIds()
+            # attached_detail_list = list(attached_detail)
+            # if len(attached_detail) == 1:
+            #     with Transact():
+            #         elem.ShowAttachedDetailGroups(target_view, attached_detail_list[0])
+            # else:
+            #     attached = False
+            #     for detail in attached_detail_list:
+            #         detail_elem = get_element(detail)
+            #         detail_name = get_parameter(detail_elem, "Type Name")
 
-                    if set_type in detail_name:
-                        with Transact():
-                            elem.ShowAttachedDetailGroups(target_view, detail_elem.Id)
-                        attached = True
+            #         if set_type in detail_name:
+            #             with Transact():
+            #                 elem.ShowAttachedDetailGroups(target_view, detail_elem.Id)
+            #             attached = True
 
-                    # Disposal
-                    detail_elem.Dispose() 
-                    del detail_name
-                if not attached:
-                    raise Exception(f"No detail attached to {elem.Name}")
+            #         # Disposal
+            #         detail_elem.Dispose() 
+            #         del detail_name
+            #     if not attached:
+            #         raise Exception(f"No detail attached to {elem.Name}")
                 
             # Set workset
             for wrkst in workset:
@@ -381,9 +363,9 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
                         set_parameter(elem, "Workset", workset[wrkst])
                     break
             
-            # Disposal
-            del attached_detail
-            del attached_detail_list
+            # # Disposal
+            # del attached_detail
+            # del attached_detail_list
         
         # Panel Board
         if is_category_this(elem, BuiltInCategory.OST_ElectricalEquipment):
@@ -414,15 +396,15 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
                     template_id = panel_template[panel_type]
                     ps_view = PanelScheduleView.CreateInstanceView(doc, template_id, elem.Id)
                     
-                    # for sp in panel_spares[panel_type]["spares"]:
-                    #     r = sp[0] 
-                    #     c = sp[1]
-                    #     ps_view.AddSpare(r, c)
+                    for sp in panel_spares[panel_type]["spares"]:
+                        r = sp[0] 
+                        c = sp[1]
+                        ps_view.AddSpare(r, c)
 
-                    #     es = ps_view.GetCircuitByCell(r, c)
-                    #     set_parameter(es, "Load Name", "SPARE")
-                    #     if sp in panel_spares[panel_type]["double"]:
-                    #         set_parameter(es, "Number of Poles", 2)
+                        es = ps_view.GetCircuitByCell(r, c)
+                        set_parameter(es, "Load Name", "SPARE")
+                        if sp in panel_spares[panel_type]["double"]:
+                            set_parameter(es, "Number of Poles", 2)
                 
                 # Disposal
                 ps_view.Dispose()

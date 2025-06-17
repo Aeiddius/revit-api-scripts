@@ -108,28 +108,22 @@ def show_detail(group: Group, primary_view: ViewPlan, detail_type: str):
         group.ShowAttachedDetailGroups(primary_view, attached_detail[0])
         return
 
-    attached: bool = False
     for detail in [get_element(i) for i in attached_detail]:
         detail_name = get_parameter(detail, "Type Name")
 
-        if set_type in detail_name:
+        if detail_type in detail_name:
             with Transact():
                 group.ShowAttachedDetailGroups(primary_view, detail.Id)
-                attached = True
-                continue 
+                return
 
-        # Disposal
-        detail_elem.Dispose() 
-        del detail_name
-    if not attached:
-        raise Exception(f"No detail attached to {group.Name}")
+    raise Exception(f"No detail attached to {group.Name}")
 
 # Body  
 @transaction      
 def start(): 
     TOWER = "B"
     target_group = "2. Presentation Views"
-    target_type = "Unit Rough-Ins"
+    target_type = "Unit Lighting"
     target_subgroup =  "b. Tower A" if TOWER == "A" else "c. Tower B" 
     
     target_units = get_view_range(target_group, target_subgroup, target_type)
@@ -138,13 +132,14 @@ def start():
     for level_view in target_units:
         dependent_views = level_view.GetDependentViewIds()
         lvl = get_num(level_view.GenLevel.Name)
-        if lvl != 5: continue
+        # if lvl != 5: continue
 
         # Iterate through dependent views
         for view_id in dependent_views:
             view = get_element(view_id)
             if "BL-" in view.Name: continue
-            print(view.Name)
+
+            # if view.Name != "UNIT 0503 BPR-2BR-RI": continue
             # Name data
             unit = UnitView(view)
 
@@ -160,11 +155,11 @@ def start():
                 if unit.unit_type not in group.Name: continue
                 ids = list(group.GetShownAttachedDetailGroupTypeIds(level_view))
                 if ids: continue
-                print(group.Name)
-                # show_detail(group, level_view, detail_type)
+                print(group.Name, detail_type)
+                show_detail(group, level_view, detail_type)
                 # group.ShowAttachedDetailGroups(primary_view, ElementId)
 
-            break # dependent_view iteration
+            # break # dependent_view iteration
  
 if activate:     
     start()    
