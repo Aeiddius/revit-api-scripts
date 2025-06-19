@@ -105,14 +105,22 @@ def is_dependent(view: ViewPlan) -> bool:
         return True
     return False
 
+def _check_exclusion(view: ViewPlan, exclude_names: list[str]=[]):
+    for exclude in exclude_names:
+        if exclude not in view.Name: continue
+        return True
+    return False
 
-def get_dependent_views(view: ViewPlan):
+def get_dependent_views(view: ViewPlan, exclude_names: list[str]=[]):
     result = []
     dependent_views = view.GetDependentViewIds()
     if len(dependent_views) == 0:
         return []
     for id in dependent_views:
         subview = get_element(id)
+        is_skip = _check_exclusion(subview, exclude_names)
+        if is_skip: continue
+
         result.append(subview)
     return result
 
@@ -155,12 +163,8 @@ def get_view_range(
         if is_dependent(view):
             continue
 
-        skip = False
-        for exclude in exclude_names:
-            if exclude in view.Name:
-                skip = True
-                break
-        if skip:
+        is_skip = _check_exclusion(view, exclude_names)
+        if is_skip:
             continue
 
         # Exception check
@@ -179,7 +183,7 @@ def get_view_range(
 
         # Check if dependent
         if dependent_only == True:
-            dpdnt_views = get_dependent_views(view)
+            dpdnt_views = get_dependent_views(view, exclude_names)
             if dpdnt_views != []:
                 result += dpdnt_views
         else:

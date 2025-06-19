@@ -134,13 +134,15 @@ def get_sheet_details(sheet):
     return sheet_data
  
 
-def get_sheet_datas():
+def get_sheet_datas(TOWER: str):
     sheet_list: list[ViewPlan] = FilteredElementCollector(
         doc).OfClass(ViewSheet).ToElements()
     sheet_dict = {}
     for sheet in sheet_list:
         if get_parameter(sheet, "Sheet Collection") != "0. Working Sheet":
             continue
+        if get_parameter(sheet, "Sheet Group") != f"Unit Plan {TOWER}":
+                    continue
         unit_key = f"{sheet.SheetNumber[-2:]} {sheet.Name}"
 
         sheet_dict[unit_key] = get_sheet_details(sheet)
@@ -159,8 +161,8 @@ def start():
 
     target_subgroup = "b. Tower A" if TOWER == "A" else "c. Tower B"
 
-    sheet_dicts = get_sheet_datas()
-    pprint(sheet_dicts)
+    sheet_dicts = get_sheet_datas(TOWER)
+    # pprint(sheet_dicts)
 
     # Retrieve panel schedules
     panel_schedules = FilteredElementCollector(
@@ -187,10 +189,12 @@ def start():
                            target_type,
                            target_range,
                            dependent_only=True,
-                           exclude_names=["MRA", "RFA"])
+                           exclude_names=["MRA", "RFA", "BL"])
     # return
     for target_view in views:
 
+        # print(target_view.Name)
+        # continue
         # if target_view.Name != "UNIT 0209 A-2AR.1-RI":
         #     continue
         unit = UnitView(target_view)
