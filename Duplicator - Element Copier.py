@@ -199,11 +199,12 @@ def get_dependent_views(target_group:str, target_subgroup: str):
     return units
   
 def start():
-    # Parameters  
+    print("asdasd")
+    # Parameters   
     TARGET_LEVEL = 3
     TOWER = "B" 
-    TARGET_UNIT = "W_Unit 03 (02 BPR-2C ADA)"
-    # Source views 
+    TARGET_UNIT = "W_Unit 03 (12 BPR-2AR)"
+    # Source views   
     source_units = get_dependent_views("1. Working Views", "c. Tower B")
 
     # Target views

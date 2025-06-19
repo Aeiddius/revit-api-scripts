@@ -98,7 +98,7 @@ def start():
     TOWER = "B"
     target_subgroup = "c. Tower B"
     # target_type = "Unit Rough-Ins"
-    target_type = "Unit Rough-Ins"
+    target_type = "Unit Lighting"
     is_working = False
  
     target_units = get_view_range(
@@ -106,41 +106,30 @@ def start():
 
     for view in target_units:
         if "BL-" in view.Name: continue
-        print(view.Name)
-        view.CropBoxActive = True  
-        continue 
-        # if view.Name != "UNIT 0512 BPR-2AR-RI": continue
- 
+
+        # if view.Name != "UNIT 0409 BPR-1D-L": continue
+
         unit = UnitView(view)
         m_unit_key = get_unit_key(unit, "B")
 
         unit_no = unit.unit_no
         group_format = unit.group_format
 
-        element_to_hide = []
-  
-        view.CropBoxActive = False
-        time.sleep(4)
-        for e in collect_elements(view, [BuiltInCategory.OST_ElectricalEquipment, BuiltInCategory.OST_IOSModelGroups, BuiltInCategory.OST_IOSAttachedDetailGroups]):
-            print(e)
-            if is_category_this(e, BuiltInCategory.OST_ElectricalEquipment):
-                if f"{TOWER}{unit_no}" not in e.Name and e.CanBeHidden:
-                    element_to_hide.append(e.Id)
 
-            if is_category_this(e, BuiltInCategory.OST_IOSModelGroups):
-                if group_format in e.Name: continue
-                to_hide = filter_members(e, view)
-                element_to_hide += to_hide
+        for e in collect_elements(view, [BuiltInCategory.OST_ElectricalEquipment]):
+            # location = get_parameter(e, "Location")
+            param = e.LookupParameter("Panel Name")
+            if not param.AsValueString():
+                print("> PROBLEM: ", view.Name)
+                continue
+            first, rest = param.AsValueString().split(" ", 1)
+            new_name = f"{TOWER}{unit_no} {rest}"
+            param.Set(new_name)
+            set_parameter(e, "Unit no.", f"{TOWER}{unit_no}")
+            print("YES: ", new_name)
 
-            if is_category_this(e, BuiltInCategory.OST_IOSAttachedDetailGroups):
-                parent = get_parameter(e, "Attached to")
-                if group_format in parent: continue
-                to_hide = filter_members(e, view)
-                element_to_hide += to_hide
  
-        if len(element_to_hide) > 0:
-            print(" ", element_to_hide)
-            view.HideElements(List[ElementId](element_to_hide))
+
         # view.CropBoxActive = True 
         #  break 
 

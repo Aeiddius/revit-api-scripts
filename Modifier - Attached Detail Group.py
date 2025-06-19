@@ -123,16 +123,16 @@ def show_detail(group: Group, primary_view: ViewPlan, detail_type: str):
 def start(): 
     TOWER = "B"
     target_group = "2. Presentation Views"
-    target_type = "Unit Lighting"
+    target_type = "Unit Device"
     target_subgroup =  "b. Tower A" if TOWER == "A" else "c. Tower B" 
     
     target_units = get_view_range(target_group, target_subgroup, target_type)
-
+    print(target_type)
     # Unit
     for level_view in target_units:
         dependent_views = level_view.GetDependentViewIds()
         lvl = get_num(level_view.GenLevel.Name)
-        # if lvl != 5: continue
+        if lvl != 2: continue
 
         # Iterate through dependent views
         for view_id in dependent_views:

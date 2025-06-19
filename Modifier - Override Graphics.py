@@ -135,8 +135,8 @@ def batch_override(view: ViewPlan, target_type: str, override: OverrideGraphicSe
 @transaction
 def start():
     target_group = "2. Presentation Views"
-    target_subgroup = "b. Tower A"
-    target_type = "Unit Lighting"
+    target_subgroup = "c. Tower B"
+    target_type = "Unit Device"
     # target_type = "Unit Device"
 
     target_units = get_dependent_views(
@@ -146,7 +146,7 @@ def start():
     graphics.SetProjectionLineColor(Color(0, 128, 64))
     graphics.SetHalftone(True)
     for lvl in target_units:
-
+        # if lvl == 4: continue
         for view_id in target_units[lvl]:
             unit_view = get_element(view_id)
             print(unit_view.Name)

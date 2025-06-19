@@ -179,7 +179,7 @@ def start():
         source_view = w_views_dict[m_unit_key]
         aligngrids(source_view, view)
         set_crop_region(source_view, view) 
-        set_view_range(source_view, view)
+        # set_view_range(source_view, view)
         # except:
         #     print(view.Name, "|", unit.unit_type)
 
