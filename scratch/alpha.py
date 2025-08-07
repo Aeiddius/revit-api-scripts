@@ -1,10 +1,10 @@
-target_view_name = "UNIT 0301 A-2A RI"
+def find_coordinates(number, total_columns):
+    row = (number - 1) // total_columns + 1
+    col = (number - 1) % total_columns + 1
+    return row, col
 
-x = "A0401 PNL A2"
-y = x.split(" ", 1)
-
-unit_no = y[0]
-panel_type = y[1]
-
-unit_no_new = unit_no[0] + target_view_name.split(" ")[1] + " " + panel_type
-print(unit_no_new)
+# Example usage:
+number = 9
+total_columns = 5
+row, col = find_coordinates(number, total_columns)
+print(f"Coordinates of {number} are: ({row}, {col})")

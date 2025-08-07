@@ -71,15 +71,15 @@ def start():
  
 
 
-    views = get_view_range("2. Presentation Views",
-                           "a. Block C",
-                           "Underground",
-                           dependent_only=False)
+    views = get_view_range("3. Utility Views",
+                           "a. Key Plan",
+                           "Key Plan B",
+                           dependent_only=True)
  
     for view in views:
        
-        view.Name = view.Name.replace("LEVEL ", "Level ")
+        view.Name = view.Name.replace("-1-", "-1B-")
 
 if activate:
-    start()
+    start() 
 OUT = output.getvalue()

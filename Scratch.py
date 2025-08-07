@@ -42,7 +42,8 @@ for script in IN[0]:  # type: ignore
     exec(script)
 
 # Functions and matrix definition
-matrix: dict[str, any] = locals().get("matrix_a")
+matrix_a: dict[str, any] = locals().get("matrix_a")
+matrix_b: dict[str, any] = locals().get("matrix_b")
 print_member: Callable[[any], None] = globals().get("print_member")
 get_element = globals().get("get_element")
 get_elements = globals().get("get_elements")
@@ -53,7 +54,9 @@ get_parameter: Callable[[Element, str], str] = globals().get("get_parameter")
 set_parameter: Callable[[Element, str, any],
                         bool] = globals().get("set_parameter")
 is_dependent: Callable[[ViewPlan], bool] = globals().get("is_dependent")
-
+is_category_this = globals().get("is_category_this")
+collect_elements = globals().get("collect_elements")
+UnitView = locals().get("UnitView")
 # ==== Template ends here ====#
 
 
@@ -78,50 +81,41 @@ a3_double_pole = [[14, 1]]
 @transaction
 def start():
 
-    views = get_view_range("2. Presentation Views", "c. Tower B", "Unit Device")
-    for view in views:
-        enums = [
-            PlanViewPlane.BottomClipPlane,
-            PlanViewPlane.CutPlane,
-            PlanViewPlane.TopClipPlane,
-            PlanViewPlane.UnderlayBottom,
-            PlanViewPlane.ViewDepthPlane,
-        ]
+    # orig = get_element(5658286)
+    # target = get_element(6495311)
+    # target.SetBoxCenter(orig.GetBoxCenter())
+
+    # return    
+ 
+    original_sched = get_element(7589758)
+    original_kp = get_element(6503480)
+
+    sheet_list: list[ViewPlan] = FilteredElementCollector(
+        doc).OfClass(ViewSheet).ToElements()
+
+    for sheet in sheet_list:
+        if get_parameter(sheet, "Sheet Collection") != "4. Unit Plan - Tower B":
+            continue
+        if get_parameter(sheet, "Sheet Group") != "Level 01":
+            continue
+        if "BL-" not in sheet.Name: continue
+
+        # ======================= SCHEDULE
+        target = collect_elements(sheet, [BuiltInCategory.OST_PanelScheduleGraphics])[0]
+        target.Origin = original_sched.Origin
+        # ==========================
+
+        # ======================== KEYPLAN
+        targets = collect_elements(sheet, [BuiltInCategory.OST_Viewports])
+        for target in targets:
+            if target.Name == "Keyplan":
+                target.SetBoxCenter(original_kp.GetBoxCenter())
+
+        # ==========================
 
 
 
-        try:
-            source_vr = view.GetViewRange()
-
-            for plane in enums:
-        
-        
-                s_level_id = source_vr.GetLevelId(plane)
-
-                if int(s_level_id.ToString()) < 0: continue
-
-                source_vr.SetLevelId(plane, view.GenLevel.Id)
-    
-            view.SetViewRange(source_vr)
-        except:
-            print(view.Name)
-
-
-    # original = get_element(10549621)
-    # target = get_element(10549868)
-
-    # target.Origin = original.Origin
-
-    # return
-    # placed_view = get_element(10551907)
-    # placed_view.SetBoxCenter(XYZ(0.765528942, 1.779766219, -0.222395833))
-    # Horiontal
-    # placed_view.SetBoxCenter(XYZ(0.727590417, 0.186369829, -0.241145833))
-
-    # Original
-    # placed_view.SetBoxCenter(XYZ(0.737794410, 1.236961806, 0.358854167))
-
-
+ 
 # (0.751355251, 0.195793393, -0.166145833)
     # placed_view.Origin = XYZ(0.058865373, 1.389748524, 0.000000000)
     # placed_view.Origin = XYZ(0.058865373, 0.387171030, 0.000000000)

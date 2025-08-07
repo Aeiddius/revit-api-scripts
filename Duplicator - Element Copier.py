@@ -224,7 +224,7 @@ def start():
         # Iterate through target units from presentation views based on level
         for tview_lvl in target_units:
             # Checks
-            if tview_lvl != 2: continue
+            if tview_lvl != 9: continue
             if tview_lvl in m_unit.exclude: continue
             if tview_lvl == TARGET_LEVEL: continue # Skip if same level as target view
             print("sadsd: ", tview_lvl)

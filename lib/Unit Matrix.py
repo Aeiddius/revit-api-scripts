@@ -153,7 +153,7 @@ matrix_b = {
     "09 OFFICE": UnitDetail(2, 2, {}, [], ortn="Unit"),
     "10 BPR-3B": UnitDetail(2, 8, {}, [], ortn="Unit"),
     "11 BPR-2D": UnitDetail(2, 8, {}, [], ortn="Unit"),
-    "12 BPR-2AR": UnitDetail(2, 8, {}, [], ortn="Unit"),
+    "12 BPR-2AR": UnitDetail(2, 9, {}, [], ortn="Unit"),
     "13 BPR-1E": UnitDetail(2, 2, {}, [], ortn="Unit"),
 
     # Level 3B-4B

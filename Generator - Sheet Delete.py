@@ -85,7 +85,9 @@ def start():
         doc).OfClass(ViewSheet).ToElements()
 
     for sheet in sheet_list:
-        if get_parameter(sheet, "Sheet Collection") != "5. Provision":
+        if get_parameter(sheet, "Sheet Collection") != "4. Unit Plan - Tower B":
+            continue
+        if get_parameter(sheet, "Sheet Group") == "Level 01":
             continue
         doc.Delete(sheet.Id)
 if activate:

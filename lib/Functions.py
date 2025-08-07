@@ -124,7 +124,6 @@ def get_dependent_views(view: ViewPlan, exclude_names: list[str]=[]):
         result.append(subview)
     return result
 
-
 def get_view_range(
     target_group: str,
     target_subgroup: str,
