@@ -55,10 +55,12 @@ target_subgroup = "b. Tower A"
 target_view_range = [2, 43 ]
 target_discipline = {
 #   "Lighting": "L",
-  "Device Unit": "DP",
+#   "Unit Device": "DP",
+#   "Unit Lighting": "L", 
+    "Unit Rough-Ins": "RI",
 }
-dont_delete_level_dependent = [2]
-
+dont_delete_level_dependent = []
+ 
 # Body
 def main_get_curves() -> dict[str, CurveLoop]:
     crop_curves: dict[str, CurveLoop] = {}
@@ -86,26 +88,29 @@ def delete_dependents(view) -> None:
 @transaction    
 def start():
     crop_curves: dict[str, CurveLoop] = main_get_curves()
-    
+
     for discipline in target_discipline:
         prefix = target_discipline[discipline]
         presentation_views: List[ViewPlan] = get_view_range("2. Presentation Views", 
             target_subgroup,
             discipline,
-            target_view_range)
+            target_view_range, exclude_names=["MRA", "RA"])
         
-        print(presentation_views)
+        # print(discipline)
+        # continue
         for view in presentation_views:
             level = get_num(view.GenLevel.Name)
-            if level not in dont_delete_level_dependent:
-                delete_dependents(view)
-             
+            
+            # if level not in dont_delete_level_dependent:
+            delete_dependents(view)
+            # continue
             # uni_name is from matrix 
             for unit_name, crop_curve in crop_curves.items():
                 if "BL-" in unit_name: continue
                 min = matrix[unit_name].min
                 max = matrix[unit_name].max
-
+                # print(view.Name, unit_name, " : ", min, max)
+                # continue
                 # If current level of view is not within the 
                 # current unit_name's mix/max range
                 if not (min <= level <= max): continue
@@ -135,7 +140,7 @@ def start():
                 print("RENAME: ", rename)
                 duplicated_view.Name = rename
     
-            break
+            # break
 
     
 

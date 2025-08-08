@@ -18,7 +18,7 @@ class UnitDetail:
     def __init__(self,
                  min: int,
                  max: int,
-                 pos,
+                 pos={},
                  exclude=[],
                  ortn: str = "",
                  sheet: str = "",
@@ -36,78 +36,77 @@ class UnitDetail:
 
 matrix_a = {
     # Level 2A
-    "01 A-2BR.3": UnitDetail(2, 2, {}),
+    "01 A-2BR.3": UnitDetail(2, 2, ),
     "02 A-2AR": UnitDetail(2, 37, {}, [4]),
-    "03 A-1BR": UnitDetail(2, 35, {}),
-    "04 A-1B": UnitDetail(2, 35, {}),
-    "05 A-2A": UnitDetail(2, 34, {}),
-    "06 A-2B": UnitDetail(2, 34, {}),
+    "03 A-1BR": UnitDetail(2, 35, ),
+    "04 A-1B": UnitDetail(2, 35, ),
+    "05 A-2A": UnitDetail(2, 34, ),
+    "06 A-2B": UnitDetail(2, 34, ),
     "07 A-2BR": UnitDetail(2, 38, {35:"06", 36:"05", 37:"05", 38:"04"}, [3, 4, 32]),
-    "08 A-2AR.1": UnitDetail(2, 2, {}),
-    "09 A-2C": UnitDetail(2, 2, {}),
+    "08 A-2AR.1": UnitDetail(2, 2, ),
+    "09 A-2C": UnitDetail(2, 2, ),
     
     # Level 3
     "01 A-2BR.4": UnitDetail(3, 32, {}, [4]),
-    "02 A-3K": UnitDetail(4, 4, {}),
     "07 A-2BR.4": UnitDetail(3, 32, {}, [4]),
     "08 A-2AR": UnitDetail(3, 38, {35:"07", 36:"06", 37:"06", 38:"05"}, [4]),
     "09 A-2A": UnitDetail(3, 4, {4:"11"}),
     "10 A-2B": UnitDetail(3, 4, {4:"12"}),
 
     # Level 4
-    "01 A-1D": UnitDetail(4, 4, {}),
-    "02 A-3K": UnitDetail(4, 4, {}),
-    "07 A-1D": UnitDetail(4, 4, {}),
-    "08 A-3K": UnitDetail(4, 4, {}),
+    "01 A-1D": UnitDetail(4, 4, ),
+    "02 A-3K": UnitDetail(4, 4, ),
+    "07 A-1D": UnitDetail(4, 4, ),
+    "08 A-3K": UnitDetail(4, 4, ),
     "09 A-1AR": UnitDetail(4, 36, {35:"08", 36:"07"}, [32]),
-    "10 A-1A": UnitDetail(4, 4, {}),
+    "10 A-1A": UnitDetail(4, 4, ),
 
     # Level 32
-    "09 A-3E": UnitDetail(32, 32, {}),
-    "10 A-2B.1": UnitDetail(32, 32, {}),
+    "09 A-3E": UnitDetail(32, 32, ),
+    "10 A-2B.1": UnitDetail(32, 32, ),
 
     # Level 33A
-    "01 A-2BR": UnitDetail(33, 37, {}),
+    "01 A-2BR": UnitDetail(33, 37, ),
     "10 A-1C": UnitDetail(33, 36, {35: "09", 36: "08"}),
     "11 A-2D.3": UnitDetail(33, 36, {35:"10", 36:"09"}),
 
     # Level 35A
-    "05 A-3B": UnitDetail(35, 35, {}),
+    "05 A-3B": UnitDetail(35, 35, ),
 
     # Level 36A
-    "03 A-3F": UnitDetail(36, 36, {}),
-    "04 A-2B.1": UnitDetail(36, 36, {}),
+    "03 A-3F": UnitDetail(36, 36, ),
+    "04 A-2B.1": UnitDetail(36, 36, ),
 
     # Level 37A
-    "03 A-3G": UnitDetail(37, 37, {}),
-    "04 A-2D.1": UnitDetail(37, 37, {}),
+    "03 A-3G": UnitDetail(37, 37, ),
+    "04 A-2D.1": UnitDetail(37, 37, ),
     "07 A-3D": UnitDetail(37, 39, {38:"06", 39:"05"}),
     "08 A-2D.1": UnitDetail(37, 39, {38:"07", 39:"06"}),
 
     # Level 38A
-    "01 A-2BR.1": UnitDetail(38, 38, {}),
-    "02 A-3H": UnitDetail(38, 38, {}),
-    "03 A-2D.2": UnitDetail(38, 39, {}),
+    "01 A-2BR.1": UnitDetail(38, 38, ),
+    "02 A-3H": UnitDetail(38, 38, ),
+    "03 A-2D.2": UnitDetail(38, 39, ),
 
     # Level 39A
-    "01 A-2DR.1": UnitDetail(39, 39, {}),
-    "02 A-3A": UnitDetail(39, 43, {}),
-    "04 A-3BR": UnitDetail(39, 39, {}),
+    "01 A-2DR.1": UnitDetail(39, 39, ),
+    "02 A-3A": UnitDetail(39, 43, {43:"01"}),
+    "04 A-3BR": UnitDetail(39, 39, ),
 
     # Level 40A
-    "01 A-2DR": UnitDetail(40, 42, {}),
-    "03 A-2D": UnitDetail(40, 42, {}),
-    "04 A-2BR.2": UnitDetail(40, 40, {}),
-    "05 A-3J": UnitDetail(40, 40, {}),
-    "06 A-2D": UnitDetail(40, 42, {}),
+    "01 A-2DR": UnitDetail(40, 42, ),
+    "03 A-2D": UnitDetail(40, 42, ),
+    "04 A-2BR.2": UnitDetail(40, 40, ),
+    "05 A-3J": UnitDetail(40, 40, ),
+    "06 A-2D": UnitDetail(40, 42, ),
 
     # Level 41A
-    "04 A-2DR": UnitDetail(41, 42, {}),
+    "04 A-2DR": UnitDetail(41, 42, ),
     "05 A-3DR": UnitDetail(41, 43, {42: "03", 43: "03"}),
 
     # Level 43A
-    "02 A-3C": UnitDetail(43, 43, {}),
-    "04 A-3C": UnitDetail(43, 43, {}),
+    "02 A-3C": UnitDetail(43, 43, ),
+    "04 A-3C": UnitDetail(43, 43, ),
 }
 
 matrix_b = {
