@@ -111,19 +111,6 @@ def _check_exclusion(view: ViewPlan, exclude_names: list[str]=[]):
         return True
     return False
 
-def get_dependent_views(view: ViewPlan, exclude_names: list[str]=[]):
-    result = []
-    dependent_views = view.GetDependentViewIds()
-    if len(dependent_views) == 0:
-        return []
-    for id in dependent_views:
-        subview = get_element(id)
-        is_skip = _check_exclusion(subview, exclude_names)
-        if is_skip: continue
-
-        result.append(subview)
-    return result
-
 def get_view_range(
     target_group: str,
     target_subgroup: str,
@@ -159,9 +146,9 @@ def get_view_range(
                 continue
         if view.LookupParameter("Type").AsValueString() != target_family_type:
             continue
-        if is_dependent(view):
+        if dependent_only==False and is_dependent(view):
             continue
-
+        
         is_skip = _check_exclusion(view, exclude_names)
         if is_skip:
             continue
@@ -170,7 +157,7 @@ def get_view_range(
         if range_value and len(range_value) != 2:
             raise ValueError(
                 "range_value must be a list of exactly two integers")
-
+        
         # Range value
         if range_value != None:
             min_range = range_value[0]
@@ -179,7 +166,7 @@ def get_view_range(
 
             if not (min_range <= level <= max_range):
                 continue
-
+        
         # Check if dependent
         if dependent_only == True:
             dpdnt_views = get_dependent_views(view, exclude_names)
@@ -190,6 +177,18 @@ def get_view_range(
 
     return result
 
+
+def get_dependent_views(view: ViewPlan, exclude_names: list[str]=[]):
+    result = []
+    dependent_views = view.GetDependentViewIds()
+    if len(dependent_views) == 0:
+        return []
+    for id in dependent_views:
+        subview = get_element(id)
+        is_skip = _check_exclusion(subview, exclude_names)
+        if is_skip: continue
+        result.append(subview)
+    return result
 
 def is_category_this(element: any, category: BuiltInCategory):
     if not element:

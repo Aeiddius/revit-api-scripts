@@ -74,6 +74,11 @@ matrix = {
     "B": matrix_b
 }
 
+subgroup = {
+    "A": "b. Tower A",
+    "B": "c. Tower B"
+}
+
 workset = {
     "RCP": 783,
     "Power": 784,
@@ -86,23 +91,25 @@ panel_template = {
     "A1": ElementId(7178103),
     "A2": ElementId(7123164),
     "A2.1": ElementId(9573549),
+    "A3": ElementId(8642555),
     "A3.1": ElementId(9372255),
     "A3.2": ElementId(9222896),
-    "A3": ElementId(8642555),
+    "A3.3": ElementId(8749398),
+    "A3.4": ElementId(9539422),
+    "A3.5": ElementId(8749398),
+    "A3.6": ElementId(13240420),
     "B1": ElementId(7665512),
     "B2": ElementId(7665511),
     "B3": ElementId(7668613)
 }
 panel_spares = {
-    "A3": {
+    "A1": {
         "spares": [
             [14, 1],
-            [10 , 6],
-            [11 , 6],
-            [12 , 6],
-            [13 , 6],
-            [18 , 6],
-            [19 , 6],
+            [13, 6],
+            [14, 6],
+            [15, 6],
+            [16, 6],
         ],
         "double": [[14, 1]]
     },
@@ -114,29 +121,82 @@ panel_spares = {
             [12, 6],
             [13, 6],
             [14, 6],
-            [15, 6], 
+            [15, 6],
         ],
         "double": [[14, 1]]
-    },
-    "A1": {
-        "spares": [[14, 1]],
-        "double": [[14, 1]],
     },
     "A2.1": {
         "spares": [[14, 1]],
         "double": [[14, 1]],
     },
-    "A3.2": {
-        "spares": [[14, 1], [15, 1]],
-        "double": [],
+    "A3": {
+        "spares": [
+            [14, 1],
+            [7, 6],
+            [10 , 6],
+            [11 , 6],
+            [12 , 6],
+            [13 , 6],
+            [18 , 6],
+            [19 , 6],
+        ],
+        "double": [[14, 1]]
     },
     "A3.1": {
         "spares": [
             [14, 1],
-            [16, 6],
-            [17, 6],
+            [7, 6],
+            [20, 6],
+            [21, 6],
+            [22, 6],
         ],
         "double": [[14, 1]] ,
+    },
+    "A3.2": {
+        "spares": [
+            [14, 1],
+            [16, 6]
+        ],
+        "double": [[14, 1]],
+    },
+    "A3.3": {
+        "spares": [
+            [14, 1],
+            [12, 6],
+            [13, 6],
+            [14, 6],
+            [15, 6],
+            [16, 6],
+        ],
+        "double": [[14, 1]],
+    },
+    "A3.4": {
+        "spares": [
+            [14, 1],
+            [17, 6],
+            [7, 6],
+        ],
+        "double": [[14, 1]],
+    },
+    "A3.5": {
+        "spares": [
+            [10, 6],
+            [11, 6],
+            [12, 6],
+            [13, 6],
+            [14, 6],
+            [15, 6],
+        ],
+        "double": [],
+    },
+    "A3.6": {
+        "spares": [
+            [14, 1],
+            [7, 6],
+            [13, 6],
+            [15, 6],
+        ],
+        "double": [[14, 1]],
     },
     "B1": {
         "spares": [
@@ -188,7 +248,7 @@ def copy_elements(base_view, target_view, elements_filtered):
                 CopyPasteOptions())
     return copied_ids
 
-def get_dependent_views(target_group:str, target_subgroup: str):
+def _get_dependent_views(target_group:str, target_subgroup: str):
     views: List[ViewPlan] = get_view_range(target_group, target_subgroup, "Unit Rough-Ins")
     units = {}
     for view in views:
@@ -197,58 +257,59 @@ def get_dependent_views(target_group:str, target_subgroup: str):
         num = get_num(view.Name)
         units[num] = dependent_ids
     return units
-  
+
+def get_working_matrix_name(view: ViewPlan) -> str:
+    return re.search(r"\((.*?)\)", view.Name).group(1)
+
+def get_tower(view_name) -> str:
+    return view_name.split("-")[0].strip()[-1]
+
 def start():
     print("asdasd")
     # Parameters   
-    TARGET_LEVEL = 3
-    TOWER = "B" 
-    TARGET_UNIT = "W_Unit 03 (12 BPR-2AR)"
+    TARGET_UNIT = "W_Unit 02 (02 A-2AR)"
+    TOWER = get_tower(TARGET_UNIT)
+
     # Source views   
-    source_units = get_dependent_views("1. Working Views", "c. Tower B")
+    source_units = get_view_range("1. Working Views", subgroup[TOWER], "Unit Rough-Ins", dependent_only=True)
 
     # Target views
-    target_units = get_dependent_views("2. Presentation Views", "c. Tower B")
+    target_units = _get_dependent_views("2. Presentation Views", subgroup[TOWER])
  
+    source_view = ""
+    # Get source view
+    for sview in source_units:
+        if sview.Name != TARGET_UNIT: continue
+        source_view = sview
 
-    # Iterate through base view of each level source views based on working views
-    for sview_id in source_units[TARGET_LEVEL]:
-  
-        base_view = get_element(sview_id)
-        if base_view.Name != TARGET_UNIT: continue
+    # Get name and matrix
+    unit_name = get_working_matrix_name(source_view)
+    m_unit = matrix[TOWER][unit_name]
+        
+    # Iterate through target units from presentation views based on level
+    for level in target_units:
+        # Checks
+        if level in m_unit.exclude: continue
+        if level == get_num(source_view.GenLevel.Name): continue # Skip if same level as target view
+        if not (m_unit.min <= level <= m_unit.max): continue # Skip if not level range
 
+        # Rename position dependent
+        positional_name = unit_name # e.g. 02 A-3A
+        if level in m_unit.pos:
+            positional_name = f'{m_unit.pos[level]}  {unit_name.split(" ")[1]}'
 
-        unit_name = re.search(r"\((.*?)\)", base_view.Name).group(1)
-        m_unit = matrix_b[unit_name]
- 
-        # Iterate through target units from presentation views based on level
-        for tview_lvl in target_units:
-            # Checks
-            if tview_lvl != 9: continue
-            if tview_lvl in m_unit.exclude: continue
-            if tview_lvl == TARGET_LEVEL: continue # Skip if same level as target view
-            print("sadsd: ", tview_lvl)
-            if not (m_unit.min <= tview_lvl <= m_unit.max): continue # Skip if not level range
-            
-            # Rename position dependent
-            unit_name_2 = unit_name
-            if tview_lvl in m_unit.pos:
-                unit_name_2 = m_unit.pos[tview_lvl] + " " + unit_name.split(" ")[1]
+        # Iterate through dependent views of each target_unit level view
+        for tview_id in target_units[level]:
+            target_view = get_element(tview_id)
+            if positional_name not in target_view.Name: continue
+            print(target_view.Name, positional_name)
+            place_unit(source_view, target_view, TOWER)
+            target_view.Dispose()
 
-            # Iterate through dependent views of each target_unit level view
-            for tview_id in target_units[tview_lvl]:
-                target_view = get_element(tview_id)
-                if unit_name_2 not in target_view.Name: continue
-                print(target_view.Name, unit_name_2)
-     
-                place_unit(base_view, target_view, TOWER)
-                target_view.Dispose()
-                # return
- 
-        base_view.Dispose()
+    source_view.Dispose()
 
 def custom_place_tower_b():
-    source = get_dependent_views("2. Presentation Views", "c. Tower B")
+    source = _get_dependent_views("2. Presentation Views", "c. Tower B")
 
     source_level = source[3] 
     target_level = source[4]
@@ -288,10 +349,7 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
         int(BuiltInCategory.OST_IOSModelGroups),
         int(BuiltInCategory.OST_ElectricalCircuit), 
         int(BuiltInCategory.OST_SwitchSystem),
-        # int(BuiltInCategory.OST_ElectricalEquipmentTags), 
     ] 
-    # base_view = get_element(3830970)
-    # target_view = get_element(5693191)
 
     # set_type = get_unit_type(target_view.Name, TOWER)
     element_collector = FilteredElementCollector(doc, base_view.Id)
@@ -324,7 +382,6 @@ def place_unit(base_view: ViewPlan, target_view: ViewPlan, TOWER: str):
     del elements_filtered
     del include_categories
     # disposal
-
 
 
     for id in copied_ids:
